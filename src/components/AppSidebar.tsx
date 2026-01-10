@@ -61,43 +61,24 @@ export function AppSidebar() {
           {open ? <Logo /> : <LogoIcon />}
           <div className="mt-8 flex flex-col gap-2">
             {menuItems.map((item, idx) => (
-              <NavLink
-                key={idx}
-                to={item.url}
-                className={({ isActive }) => 
-                  isActive 
-                    ? "text-primary bg-primary/10 hover:bg-primary/20" 
-                    : "text-muted-foreground hover:text-foreground"
-                }
-              >
-                <SidebarLink link={{
-                  label: item.title,
-                  href: item.url,
-                  icon: <item.icon className="h-5 w-5 flex-shrink-0" />
-                }} />
-              </NavLink>
+              <SidebarLink key={idx} link={{
+                label: item.title,
+                href: item.url,
+                icon: <item.icon className="text-foreground h-5 w-5 flex-shrink-0" />
+              }} />
             ))}
           </div>
         </div>
         <div>
-          <NavLink
-            to="/login"
-            className={({ isActive }) => 
-              isActive 
-                ? "text-primary bg-primary/10 hover:bg-primary/20" 
-                : "text-muted-foreground hover:text-foreground"
-            }
-          >
-            <SidebarLink
-              link={{
-                label: "Sair",
-                href: "/login",
-                icon: (
-                  <LogOut className="h-5 w-5 flex-shrink-0" />
-                ),
-              }}
-            />
-          </NavLink>
+          <SidebarLink
+            link={{
+              label: "Sair",
+              href: "/login",
+              icon: (
+                <LogOut className="text-foreground h-5 w-5 flex-shrink-0" />
+              ),
+            }}
+          />
         </div>
       </SidebarBody>
     </Sidebar>
@@ -121,11 +102,11 @@ export const Logo = () => {
 
 export const LogoIcon = () => {
   return (
-    <div className="flex items-center space-x-2 py-1 relative z-20">
+    <div className="flex items-center justify-center py-1 relative z-20">
       <img 
         src={logo} 
         alt="Detail Soluções" 
-        className="h-8 w-auto object-contain"
+        className="h-10 w-auto object-contain"
       />
     </div>
   );
