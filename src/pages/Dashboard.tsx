@@ -1,5 +1,6 @@
 import { mockDashboardStats, mockOrders } from '@/data/mockData';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { LayoutDashboard } from 'lucide-react';
 
 const statusLabels: Record<string, string> = {
   recebido: 'Recebido',
@@ -29,9 +30,12 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold gradient-text">Dashboard</h1>
-        <p className="text-muted-foreground">Visão geral do seu negócio</p>
+      <div className="flex items-center gap-3">
+        <LayoutDashboard className="w-6 h-6 text-primary" />
+        <div>
+          <h1 className="text-2xl font-bold gradient-text">Dashboard</h1>
+          <p className="text-muted-foreground">Visão geral do seu negócio</p>
+        </div>
       </div>
 
       {/* Stats Grid */}

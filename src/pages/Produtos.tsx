@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
+import { Pizza } from 'lucide-react';
 import type { Product } from '@/types';
 
 function ProductForm({ product, onClose }: { product?: Product; onClose: () => void }) {
@@ -91,22 +92,12 @@ export default function Produtos() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <div className="flex items-center gap-3">
+        <Pizza className="w-6 h-6 text-primary" />
         <div>
           <h1 className="text-2xl font-bold gradient-text">Produtos</h1>
           <p className="text-muted-foreground">Gerencie seu cardápio</p>
         </div>
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <Button onClick={handleNew}>Novo Produto</Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>{selectedProduct ? 'Editar Produto' : 'Novo Produto'}</DialogTitle>
-            </DialogHeader>
-            <ProductForm product={selectedProduct} onClose={() => setIsDialogOpen(false)} />
-          </DialogContent>
-        </Dialog>
       </div>
 
       <div className="flex flex-col gap-4 md:flex-row">

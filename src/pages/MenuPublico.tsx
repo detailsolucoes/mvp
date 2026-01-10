@@ -1,6 +1,7 @@
 import { mockProducts, mockCategories } from '@/data/mockData';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Menu } from 'lucide-react';
 import logo from '@/assets/logo.jpeg';
 
 function formatWhatsAppMessage(productName: string, price: number) {
@@ -29,7 +30,10 @@ export default function MenuPublico() {
       <div className="max-w-4xl mx-auto px-4 py-6">
         {/* Title */}
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold gradient-text">Cardápio Digital</h1>
+          <div className="flex items-center justify-center gap-3 mb-2">
+            <Menu className="w-6 h-6 text-primary" />
+            <h1 className="text-2xl font-bold gradient-text">Cardápio Digital</h1>
+          </div>
           <p className="text-muted-foreground">Escolha seus produtos e peça via WhatsApp</p>
         </div>
 

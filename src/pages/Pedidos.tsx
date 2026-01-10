@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { mockOrders } from '@/data/mockData';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { ShoppingCart } from 'lucide-react';
 import type { Order, OrderStatus } from '@/types';
 
 const columns: { id: OrderStatus; label: string }[] = [
@@ -156,9 +157,12 @@ export default function Pedidos() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold gradient-text">Pedidos</h1>
-        <p className="text-muted-foreground">Arraste os pedidos para alterar o status</p>
+      <div className="flex items-center gap-3">
+        <ShoppingCart className="w-6 h-6 text-primary" />
+        <div>
+          <h1 className="text-2xl font-bold gradient-text">Pedidos</h1>
+          <p className="text-muted-foreground">Arraste os pedidos para alterar o status</p>
+        </div>
       </div>
 
       <div className="flex gap-4 overflow-x-auto pb-4">

@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
+import { Settings } from 'lucide-react';
 
 export default function Configuracoes() {
   const [settings, setSettings] = useState({
@@ -31,9 +32,12 @@ export default function Configuracoes() {
 
   return (
     <div className="space-y-6 max-w-4xl">
-      <div>
-        <h1 className="text-2xl font-bold gradient-text">Configurações</h1>
-        <p className="text-muted-foreground">Gerencie as configurações da sua empresa</p>
+      <div className="flex items-center gap-3">
+        <Settings className="w-6 h-6 text-primary" />
+        <div>
+          <h1 className="text-2xl font-bold gradient-text">Configurações</h1>
+          <p className="text-muted-foreground">Gerencie as configurações da sua empresa</p>
+        </div>
       </div>
 
       {/* Business Info */}

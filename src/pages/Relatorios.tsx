@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useState } from 'react';
 import { mockDashboardStats, mockCustomers, mockProducts } from '@/data/mockData';
+import { BarChart3 } from 'lucide-react';
 
 // Mock data for charts
 const revenueByDay = [
@@ -62,11 +63,16 @@ export default function Relatorios() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <div className="flex items-center gap-3">
+        <BarChart3 className="w-6 h-6 text-primary" />
         <div>
           <h1 className="text-2xl font-bold gradient-text">Relatórios</h1>
           <p className="text-muted-foreground">Análise de desempenho do seu negócio</p>
         </div>
+      </div>
+
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div></div>
         <Select value={period} onValueChange={setPeriod}>
           <SelectTrigger className="w-48">
             <SelectValue />

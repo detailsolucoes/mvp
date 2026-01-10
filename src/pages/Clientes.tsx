@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
+import { Users } from 'lucide-react';
 import type { Customer } from '@/types';
 
 function CustomerForm({ customer, onClose }: { customer?: Customer; onClose: () => void }) {
@@ -66,22 +67,12 @@ export default function Clientes() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <div className="flex items-center gap-3">
+        <Users className="w-6 h-6 text-primary" />
         <div>
           <h1 className="text-2xl font-bold gradient-text">Clientes</h1>
           <p className="text-muted-foreground">Gerencie sua base de clientes</p>
         </div>
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <Button onClick={handleNew}>Novo Cliente</Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>{selectedCustomer ? 'Editar Cliente' : 'Novo Cliente'}</DialogTitle>
-            </DialogHeader>
-            <CustomerForm customer={selectedCustomer} onClose={() => setIsDialogOpen(false)} />
-          </DialogContent>
-        </Dialog>
       </div>
 
       <div className="flex gap-4">
