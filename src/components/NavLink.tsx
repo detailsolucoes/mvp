@@ -10,7 +10,7 @@ interface NavLinkCompatProps extends Omit<NavLinkProps, "className"> {
 }
 
 const NavLink = forwardRef<HTMLAnchorElement, NavLinkCompatProps>(
-  ({ className, activeClassName, pendingClassName, to, ...props }, ref) => {
+  ({ className, activeClassName, pendingClassName, to, children, ...props }, ref) => {
     return (
       <RouterNavLink
         ref={ref}
@@ -25,16 +25,7 @@ const NavLink = forwardRef<HTMLAnchorElement, NavLinkCompatProps>(
         }
         {...props}
       >
-        {({ isActive }) => (
-          <>
-            {React.cloneElement(props.children as React.ReactElement, {
-              className: cn(
-                (props.children as React.ReactElement).props.className,
-                isActive && "text-[hsl(var(--sidebar-accent-foreground))]"
-              )
-            })}
-          </>
-        )}
+        {children}
       </RouterNavLink>
     );
   },
