@@ -17,9 +17,9 @@ const NavLink = forwardRef<HTMLAnchorElement, NavLinkCompatProps>(
         to={to}
         className={({ isActive, isPending }) =>
           cn(
-            "flex items-center justify-start gap-2 group/sidebar py-2",
+            "flex items-center justify-start gap-2 group/sidebar py-2 px-3 rounded-lg transition-all duration-200",
             className,
-            isActive && "text-[hsl(var(--primary))] hover:text-[hsl(var(--primary))]",
+            isActive && "bg-[hsl(var(--sidebar-accent))] text-[hsl(var(--sidebar-accent-foreground))] shadow-sm",
             isPending && pendingClassName
           )
         }
@@ -30,7 +30,7 @@ const NavLink = forwardRef<HTMLAnchorElement, NavLinkCompatProps>(
             {React.cloneElement(props.children as React.ReactElement, {
               className: cn(
                 (props.children as React.ReactElement).props.className,
-                isActive && "text-[hsl(var(--primary))]"
+                isActive && "text-[hsl(var(--sidebar-accent-foreground))]"
               )
             })}
           </>
