@@ -81,7 +81,7 @@ export function AppSidebar() {
               label: "Sair",
               href: "/login",
               icon: (
-                <LogOut className="text-foreground h-5 w-5 flex-shrink-0" />
+                <LogOut className="text-ufreq-foreground h-5 w-5 flex-shrink-0" />
               ),
             }}
           />
