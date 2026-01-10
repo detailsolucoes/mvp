@@ -5,7 +5,7 @@
 /* Detail Soluções - Design System
    Background: #0B0F14 (dark)
    Primary text: #FFFFFF
-   Accent colors: #22D3EE, #38BDF8, #2563EB
+   Accent colors: #00D4FF (azul vibrante), #0099FF, #0066FF
    All colors in HSL
 */
 
@@ -21,16 +21,16 @@
     --popover: 216 28% 10%;
     --popover-foreground: 0 0% 100%;
 
-    --primary: 189 94% 53%;
+    --primary: 188 100% 42%; /* Azul vibrante mais intenso */
     --primary-foreground: 216 33% 6%;
 
-    --secondary: 199 95% 60%;
+    --secondary: 188 100% 50%; /* Azul vibrante mais claro */
     --secondary-foreground: 216 33% 6%;
 
     --muted: 216 28% 14%;
     --muted-foreground: 215 20% 65%;
 
-    --accent: 221 83% 53%;
+    --accent: 188 100% 45%; /* Azul vibrante para acento */
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
@@ -38,23 +38,23 @@
 
     --border: 216 28% 16%;
     --input: 216 28% 14%;
-    --ring: 189 94% 53%;
+    --ring: 188 100% 42%; /* Azul vibrante para ring */
 
     --radius: 0.5rem;
 
     --sidebar-background: 216 33% 5%;
     --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 189 94% 53%;
+    --sidebar-primary: 188 100% 42%; /* Azul vibrante */
     --sidebar-primary-foreground: 216 33% 6%;
-    --sidebar-accent: 216 28% 12%;
+    --sidebar-accent: 188 100% 45%; /* Azul vibrante para acento */
     --sidebar-accent-foreground: 0 0% 100%;
     --sidebar-border: 216 28% 14%;
-    --sidebar-ring: 189 94% 53%;
+    --sidebar-ring: 188 100% 42%; /* Azul vibrante */
 
     /* Gradient tokens */
-    --gradient-start: 189 94% 53%;
-    --gradient-mid: 199 95% 60%;
-    --gradient-end: 221 83% 53%;
+    --gradient-start: 188 100% 42%; /* Azul vibrante */
+    --gradient-mid: 188 100% 50%; /* Azul vibrante mais claro */
+    --gradient-end: 188 100% 45%; /* Azul vibrante intermediário */
   }
 
   .dark {
@@ -67,16 +67,16 @@
     --popover: 216 28% 10%;
     --popover-foreground: 0 0% 100%;
 
-    --primary: 189 94% 53%;
+    --primary: 188 100% 42%;
     --primary-foreground: 216 33% 6%;
 
-    --secondary: 199 95% 60%;
+    --secondary: 188 100% 50%;
     --secondary-foreground: 216 33% 6%;
 
     --muted: 216 28% 14%;
     --muted-foreground: 215 20% 65%;
 
-    --accent: 221 83% 53%;
+    --accent: 188 100% 45%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
@@ -84,16 +84,16 @@
 
     --border: 216 28% 16%;
     --input: 216 28% 14%;
-    --ring: 189 94% 53%;
+    --ring: 188 100% 42%;
 
     --sidebar-background: 216 33% 5%;
     --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 189 94% 53%;
+    --sidebar-primary: 188 100% 42%;
     --sidebar-primary-foreground: 216 33% 6%;
-    --sidebar-accent: 216 28% 12%;
+    --sidebar-accent: 188 100% 45%;
     --sidebar-accent-foreground: 0 0% 100%;
     --sidebar-border: 216 28% 14%;
-    --sidebar-ring: 189 94% 53%;
+    --sidebar-ring: 188 100% 42%;
   }
 }
 

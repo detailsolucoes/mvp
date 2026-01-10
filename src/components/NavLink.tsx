@@ -19,7 +19,7 @@ const NavLink = forwardRef<HTMLAnchorElement, NavLinkCompatProps>(
           cn(
             "flex items-center justify-start gap-2 group/sidebar py-2 px-3 rounded-lg transition-all duration-200",
             className,
-            isActive && "bg-[hsl(var(--sidebar-accent))] text-[hsl(var(--sidebar-accent-foreground))] shadow-sm",
+            isActive && "bg-[hsl(var(--sidebar-accent))] text-[hsl(var(--sidebar-primary))] shadow-sm",
             isPending && pendingClassName
           )
         }
