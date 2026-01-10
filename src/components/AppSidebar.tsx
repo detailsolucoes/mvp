@@ -10,7 +10,8 @@ import {
   Menu, 
   BarChart3, 
   Settings,
-  LogOut 
+  LogOut,
+  MessageSquare
 } from 'lucide-react';
 
 const menuItems = [
@@ -43,6 +44,11 @@ const menuItems = [
     title: 'Relatórios', 
     url: '/relatorios', 
     icon: BarChart3 
+  },
+  { 
+    title: 'WhatsApp', 
+    url: '/chat', 
+    icon: MessageSquare 
   },
   { 
     title: 'Configurações', 

@@ -11,6 +11,7 @@ import Produtos from "@/pages/Produtos";
 import MenuPublico from "@/pages/MenuPublico";
 import Relatorios from "@/pages/Relatorios";
 import Configuracoes from "@/pages/Configuracoes";
+import Chat from "@/pages/Chat";
 import Login from "@/pages/Login";
 import NotFound from "@/pages/NotFound";
 
@@ -34,6 +35,7 @@ const App = () => (
           <Route path="/menu" element={<MainLayout><MenuPublico /></MainLayout>} />
           <Route path="/relatorios" element={<MainLayout><Relatorios /></MainLayout>} />
           <Route path="/configuracoes" element={<MainLayout><Configuracoes /></MainLayout>} />
+          <Route path="/chat" element={<MainLayout><Chat /></MainLayout>} />
           
           <Route path="*" element={<NotFound />} />
         </Routes>
