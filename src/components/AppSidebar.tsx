@@ -1,16 +1,5 @@
 import { NavLink } from '@/components/NavLink';
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarTrigger,
-  SidebarFooter,
-} from '@/components/ui/sidebar';
+import { Sidebar, SidebarBody, SidebarLink } from '@/components/ui/sidebar';
 import logo from '@/assets/logo.jpeg';
 import { 
   LayoutDashboard, 
@@ -62,52 +51,62 @@ const menuItems = [
 ];
 
 export function AppSidebar() {
-  return (
-    <Sidebar className="border-r border-border">
-      <SidebarHeader className="p-4 border-b border-border">
-        <div className="flex items-center justify-between gap-3">
-          <img 
-            src={logo} 
-            alt="Detail Soluções" 
-            className="h-10 w-auto object-contain"
-          />
-          <SidebarTrigger className="text-foreground hover:bg-muted p-2 rounded-md" />
-        </div>
-      </SidebarHeader>
-      
-      <SidebarContent className="p-2">
-        <SidebarGroup>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {menuItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <NavLink
-                      to={item.url}
-                      end={item.url === '/'}
-                      className="w-full px-4 py-3 rounded-md text-sm font-medium transition-colors hover:bg-muted"
-                      activeClassName="bg-muted text-primary"
-                    >
-                      <item.icon className="mr-3 h-4 w-4" />
-                      {item.title}
-                    </NavLink>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
+  const [open, setOpen] = React.useState(false);
 
-      <SidebarFooter className="p-4 border-t border-border">
-        <NavLink
-          to="/login"
-          className="w-full px-4 py-2 rounded-md text-sm font-medium text-center bg-muted hover:bg-muted/80 transition-colors block flex items-center justify-center"
-        >
-          <LogOut className="mr-2 h-4 w-4" />
-          Sair
-        </NavLink>
-      </SidebarFooter>
+  return (
+    <Sidebar open={open} setOpen={setOpen} className="border-r border-border">
+      <SidebarBody className="justify-between gap-10">
+        <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+          {open ? <Logo /> : <LogoIcon />}
+          <div className="mt-8 flex flex-col gap-2">
+            {menuItems.map((item, idx) => (
+              <SidebarLink key={idx} link={{
+                label: item.title,
+                href: item.url,
+                icon: <item.icon className="text-foreground h-5 w-5 flex-shrink-0" />
+              }} />
+            ))}
+          </div>
+        </div>
+        <div>
+          <SidebarLink
+            link={{
+              label: "Sair",
+              href: "/login",
+              icon: (
+                <LogOut className="text-foreground h-5 w-5 flex-shrink-0" />
+              ),
+            }}
+          />
+        </div>
+      </SidebarBody>
     </Sidebar>
   );
 }
+
+export const Logo = () => {
+  return (
+    <div className="flex items-center space-x-2 py-1 relative z-20">
+      <img 
+        src={logo} 
+        alt="Detail Soluções" 
+        className="h-8 w-auto object-contain"
+      />
+      <span className="font-medium text-foreground whitespace-pre">
+        Detail Soluções
+      </span>
+    </div>
+  );
+};
+
+export const LogoIcon = () => {
+  return (
+    <div className="flex items-center space-x-2 py-1 relative z-20">
+      <img 
+        src={logo} 
+        alt="Detail Soluções" 
+        className="h-8 w-auto object-contain"
+      />
+    </div>
+  );
+};
