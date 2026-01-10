@@ -53,7 +53,7 @@ export default function MenuPublico() {
 
           return (
             <section key={category.id} id={category.id} className="mb-10">
-              <h2 className="text-xl font-bold mb-4 pb-2 border-b border-border">
+              <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gradient-text">
                 {category.name}
               </h2>
               <div className="grid gap-4 md:grid-cols-2">
