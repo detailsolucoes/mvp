@@ -1,3 +1,4 @@
+import React from 'react';
 import { NavLink } from '@/components/NavLink';
 import { Sidebar, SidebarBody, SidebarLink } from '@/components/ui/sidebar';
 import logo from '@/assets/logo.jpeg';
