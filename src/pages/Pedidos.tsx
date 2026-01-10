@@ -157,7 +157,7 @@ export default function Pedidos() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2">
         <ShoppingCart className="w-6 h-6 text-primary" />
         <div>
           <h1 className="text-2xl font-bold gradient-text">Pedidos</h1>

@@ -30,7 +30,7 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2">
         <LayoutDashboard className="w-6 h-6 text-primary" />
         <div>
           <h1 className="text-2xl font-bold gradient-text">Dashboard</h1>
