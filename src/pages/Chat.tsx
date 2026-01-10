@@ -178,7 +178,7 @@ export default function Chat() {
         <div className="p-4 border-b border-border">
           <div className="flex items-center gap-2 mb-4">
             <MessageSquare className="w-5 h-5 text-primary" />
-            <h1 className="text-xl font-bold gradient-text">WhatsApp</h1>
+            <h1 className="text-xl font-bold gradient-text">Chat</h1>
           </div>
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
