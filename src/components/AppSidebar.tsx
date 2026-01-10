@@ -46,7 +46,7 @@ const menuItems = [
     icon: BarChart3 
   },
   { 
-    title: 'WhatsApp', 
+    title: 'Chat', 
     url: '/chat', 
     icon: MessageSquare 
   },
