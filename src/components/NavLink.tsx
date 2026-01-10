@@ -16,6 +16,7 @@ const NavLink = forwardRef<HTMLAnchorElement, NavLinkCompatProps>(
         to={to}
         className={({ isActive, isPending }) =>
           cn(
+            "flex items-center justify-start gap-2 group/sidebar py-2",
             className,
             isActive && "text-[hsl(var(--primary))] hover:text-[hsl(var(--primary))]",
             isPending && pendingClassName
