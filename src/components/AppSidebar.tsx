@@ -22,32 +22,32 @@ const menuItems = [
   { 
     title: 'Pedidos', 
     url: '/pedidos', 
-    icon: ShoppingCart 
+    icon: LayoutDashboard 
   },
   { 
     title: 'Clientes', 
     url: '/clientes', 
-    icon: Users 
+    icon: LayoutDashboard 
   },
   { 
     title: 'Produtos', 
     url: '/produtos', 
-    icon: Pizza 
+    icon: LayoutDashboard 
   },
   { 
     title: 'Menu Público', 
     url: '/menu', 
-    icon: Menu 
+    icon: LayoutDashboard 
   },
   { 
     title: 'Relatórios', 
     url: '/relatorios', 
-    icon: BarChart3 
+    icon: LayoutDashboard 
   },
   { 
     title: 'Configurações', 
     url: '/configuracoes', 
-    icon: Settings 
+    icon: LayoutDashboard 
   },
 ];
 

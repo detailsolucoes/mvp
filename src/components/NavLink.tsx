@@ -23,7 +23,18 @@ const NavLink = forwardRef<HTMLAnchorElement, NavLinkCompatProps>(
           )
         }
         {...props}
-      />
+      >
+        {({ isActive }) => (
+          <>
+            {React.cloneElement(props.children as React.ReactElement, {
+              className: cn(
+                (props.children as React.ReactElement).props.className,
+                isActive && "text-[hsl(var(--primary))]"
+              )
+            })}
+          </>
+        )}
+      </RouterNavLink>
     );
   },
 );
