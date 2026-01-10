@@ -61,24 +61,43 @@ export function AppSidebar() {
           {open ? <Logo /> : <LogoIcon />}
           <div className="mt-8 flex flex-col gap-2">
             {menuItems.map((item, idx) => (
-              <SidebarLink key={idx} link={{
-                label: item.title,
-                href: item.url,
-                icon: <item.icon className="text-foreground h-5 w-5 flex-shrink-0" />
-              }} />
+              <NavLink
+                key={idx}
+                to={item.url}
+                className={({ isActive }) => 
+                  isActive 
+                    ? "text-primary bg-primary/10 hover:bg-primary/20" 
+                    : "text-muted-foreground hover:text-foreground"
+                }
+              >
+                <SidebarLink link={{
+                  label: item.title,
+                  href: item.url,
+                  icon: <item.icon className="h-5 w-5 flex-shrink-0" />
+                }} />
+              </NavLink>
             ))}
           </div>
         </div>
         <div>
-          <SidebarLink
-            link={{
-              label: "Sair",
-              href: "/login",
-              icon: (
-                <LogOut className="text-foreground h-5 w-5 flex-shrink-0" />
-              ),
-            }}
-          />
+          <NavLink
+            to="/login"
+            className={({ isActive }) => 
+              isActive 
+                ? "text-primary bg-primary/10 hover:bg-primary/20" 
+                : "text-muted-foreground hover:text-foreground"
+            }
+          >
+            <SidebarLink
+              link={{
+                label: "Sair",
+                href: "/login",
+                icon: (
+                  <LogOut className="h-5 w-5 flex-shrink-0" />
+                ),
+              }}
+            />
+          </NavLink>
         </div>
       </SidebarBody>
     </Sidebar>
