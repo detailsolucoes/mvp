@@ -14,7 +14,7 @@ function LayoutContent({ children }: MainLayoutProps) {
       <AppSidebar />
       <main 
         className={`flex-1 overflow-auto transition-all duration-300 ease-in-out ${
-          open ? 'ml-[300px]' : 'ml-[60px]'
+          open ? 'ml-[300px]' : 'ml-[80px]'
         }`}
       >
         <header className="sticky top-0 z-10 flex h-14 items-center gap-4 border-b border-border bg-background/95 backdrop-blur px-4 md:hidden">
