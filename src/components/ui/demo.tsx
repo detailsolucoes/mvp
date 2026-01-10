@@ -1,10 +1,9 @@
 "use client";
 import React, { useState } from "react";
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
-import { LayoutDashboard, ShoppingCart, Users, Pizza, Menu, BarChart3, Settings, LogOut } from "lucide-react";
+import { LayoutDashboard, UserCog, Settings, LogOut } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import logo from '@/assets/logo.jpeg';
 
 export function SidebarDemo() {
   const links = [
@@ -16,45 +15,24 @@ export function SidebarDemo() {
       ),
     },
     {
-      label: "Pedidos",
-      href: "/pedidos",
+      label: "Profile",
+      href: "#",
       icon: (
-        <ShoppingCart className="text-foreground h-5 w-5 flex-shrink-0" />
+        <UserCog className="text-foreground h-5 w-5 flex-shrink-0" />
       ),
     },
     {
-      label: "Clientes",
-      href: "/clientes",
-      icon: (
-        <Users className="text-foreground h-5 w-5 flex-shrink-0" />
-      ),
-    },
-    {
-      label: "Produtos",
-      href: "/produtos",
-      icon: (
-        <Pizza className="text-foreground h-5 w-5 flex-shrink-0" />
-      ),
-    },
-    {
-      label: "Menu Público",
-      href: "/menu",
-      icon: (
-        <Menu className="text-foreground h-5 w-5 flex-shrink-0" />
-      ),
-    },
-    {
-      label: "Relatórios",
-      href: "/relatorios",
-      icon: (
-        <BarChart3 className="text-foreground h-5 w-5 flex-shrink-0" />
-      ),
-    },
-    {
-      label: "Configurações",
-      href: "/configuracoes",
+      label: "Settings",
+      href: "#",
       icon: (
         <Settings className="text-foreground h-5 w-5 flex-shrink-0" />
+      ),
+    },
+    {
+      label: "Logout",
+      href: "/login",
+      icon: (
+        <LogOut className="text-foreground h-5 w-5 flex-shrink-0" />
       ),
     },
   ];
@@ -63,7 +41,7 @@ export function SidebarDemo() {
     <div
       className={cn(
         "rounded-md flex flex-col md:flex-row bg-background w-full flex-1 max-w-7xl mx-auto border border-border overflow-hidden",
-        "h-screen"
+        "h-[60vh]" // for your use case, use `h-screen` instead of `h-[60vh]`
       )}
     >
       <Sidebar open={open} setOpen={setOpen}>
@@ -79,10 +57,12 @@ export function SidebarDemo() {
           <div>
             <SidebarLink
               link={{
-                label: "Sair",
-                href: "/login",
+                label: "Usuário",
+                href: "#",
                 icon: (
-                  <LogOut className="text-foreground h-5 w-5 flex-shrink-0" />
+                  <div className="h-7 w-7 flex-shrink-0 rounded-full bg-muted flex items-center justify-center text-xs font-medium">
+                    DS
+                  </div>
                 ),
               }}
             />
@@ -96,12 +76,11 @@ export function SidebarDemo() {
 
 export const Logo = () => {
   return (
-    <div className="flex items-center space-x-2 py-1 relative z-20">
-      <img 
-        src={logo} 
-        alt="Detail Soluções" 
-        className="h-8 w-auto object-contain"
-      />
+    <a
+      href="#"
+      className="font-normal flex space-x-2 items-center text-sm text-foreground py-1 relative z-20"
+    >
+      <div className="h-5 w-6 bg-primary rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -109,19 +88,18 @@ export const Logo = () => {
       >
         Detail Soluções
       </motion.span>
-    </div>
+    </a>
   );
 };
 
 export const LogoIcon = () => {
   return (
-    <div className="flex items-center space-x-2 py-1 relative z-20">
-      <img 
-        src={logo} 
-        alt="Detail Soluções" 
-        className="h-8 w-auto object-contain"
-      />
-    </div>
+    <a
+      href="#"
+      className="font-normal flex space-x-2 items-center text-sm text-foreground py-1 relative z-20"
+    >
+      <div className="h-5 w-6 bg-primary rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
+    </a>
   );
 };
 
