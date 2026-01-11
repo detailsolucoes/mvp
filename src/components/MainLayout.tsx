@@ -1,17 +1,20 @@
-import { SidebarProvider, useSidebar } from '@/components/ui/sidebar';
-import { AppSidebar } from '@/components/AppSidebar';
+import React from 'react';
+import { Sidebar } from '@/components/ui/sidebar'; // Importa Sidebar, remove SidebarProvider
+import { AppSidebarContent } from '@/components/AppSidebarContent'; // Importa o componente renomeado
 import logo from '@/assets/logo.jpeg';
 
 interface MainLayoutProps {
   children: React.ReactNode;
 }
 
-function LayoutContent({ children }: MainLayoutProps) {
-  const { open } = useSidebar();
+export function MainLayout({ children }: MainLayoutProps) {
+  const [open, setOpen] = React.useState(false); // Gerencia o estado 'open' do sidebar aqui
   
   return (
     <div className="flex min-h-screen w-full">
-      <AppSidebar />
+      <Sidebar open={open} setOpen={setOpen} className="border-r border-border">
+        <AppSidebarContent /> {/* Renderiza o conteúdo do sidebar aqui */}
+      </Sidebar>
       <main 
         className={`flex-1 overflow-auto transition-all duration-300 ease-in-out ${
           open ? 'ml-[300px]' : 'ml-[60px]'
@@ -25,13 +28,5 @@ function LayoutContent({ children }: MainLayoutProps) {
         </div>
       </main>
     </div>
-  );
-}
-
-export function MainLayout({ children }: MainLayoutProps) {
-  return (
-    <SidebarProvider>
-      <LayoutContent>{children}</LayoutContent>
-    </SidebarProvider>
   );
 }

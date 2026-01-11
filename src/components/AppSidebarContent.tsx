@@ -1,6 +1,6 @@
 import React from 'react';
-import { NavLink } from '@/components/ui/nav-link'; // Caminho atualizado
-import { Sidebar, SidebarBody, SidebarLink } from '@/components/ui/sidebar';
+import { NavLink } from '@/components/ui/nav-link';
+import { SidebarBody, SidebarLink, useSidebar } from '@/components/ui/sidebar'; // Import useSidebar
 import logo from '@/assets/logo.jpeg';
 import { 
   LayoutDashboard, 
@@ -57,37 +57,35 @@ const menuItems = [
   },
 ];
 
-export function AppSidebar() {
-  const [open, setOpen] = React.useState(false);
+export function AppSidebarContent() {
+  const { open } = useSidebar(); // Consome o estado 'open' do contexto fornecido pelo Sidebar pai
 
   return (
-    <Sidebar open={open} setOpen={setOpen} className="border-r border-border">
-      <SidebarBody className="justify-between gap-10">
-        <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
-          {open ? <Logo /> : <LogoIcon />}
-          <div className="mt-8 flex flex-col gap-2">
-            {menuItems.map((item, idx) => (
-              <SidebarLink key={idx} link={{
-                label: item.title,
-                href: item.url,
-                icon: <item.icon className="text-foreground h-5 w-5 flex-shrink-0" />
-              }} />
-            ))}
-          </div>
+    <SidebarBody className="justify-between gap-10">
+      <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+        {open ? <Logo /> : <LogoIcon />}
+        <div className="mt-8 flex flex-col gap-2">
+          {menuItems.map((item, idx) => (
+            <SidebarLink key={idx} link={{
+              label: item.title,
+              href: item.url,
+              icon: <item.icon className="text-foreground h-5 w-5 flex-shrink-0" />
+            }} />
+          ))}
         </div>
-        <div>
-          <SidebarLink
-            link={{
-              label: "Sair",
-              href: "/login",
-              icon: (
-                <LogOut className="text-foreground h-5 w-5 flex-shrink-0" />
-              ),
-            }}
-          />
-        </div>
-      </SidebarBody>
-    </Sidebar>
+      </div>
+      <div>
+        <SidebarLink
+          link={{
+            label: "Sair",
+            href: "/login",
+            icon: (
+              <LogOut className="text-foreground h-5 w-5 flex-shrink-0" />
+            ),
+          }}
+        />
+      </div>
+    </SidebarBody>
   );
 }
 
