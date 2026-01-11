@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { MainLayout } from "@/components/MainLayout";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 import Dashboard from "@/pages/Dashboard";
 import Pedidos from "@/pages/Pedidos";
 import Clientes from "@/pages/Clientes";
@@ -17,15 +18,47 @@ export const AppRouter = () => (
       {/* Public routes */}
       <Route path="/login" element={<Login />} />
       
-      {/* App routes with layout */}
-      <Route path="/" element={<MainLayout><Dashboard /></MainLayout>} />
-      <Route path="/pedidos" element={<MainLayout><Pedidos /></MainLayout>} />
-      <Route path="/clientes" element={<MainLayout><Clientes /></MainLayout>} />
-      <Route path="/produtos" element={<MainLayout><Produtos /></MainLayout>} />
-      <Route path="/menu" element={<MainLayout><MenuPublico /></MainLayout>} />
-      <Route path="/relatorios" element={<MainLayout><Relatorios /></MainLayout>} />
-      <Route path="/configuracoes" element={<MainLayout><Configuracoes /></MainLayout>} />
-      <Route path="/chat" element={<MainLayout><Chat /></MainLayout>} />
+      {/* Protected routes with layout */}
+      <Route path="/" element={
+        <ProtectedRoute>
+          <MainLayout><Dashboard /></MainLayout>
+        </ProtectedRoute>
+      } />
+      <Route path="/pedidos" element={
+        <ProtectedRoute>
+          <MainLayout><Pedidos /></MainLayout>
+        </ProtectedRoute>
+      } />
+      <Route path="/clientes" element={
+        <ProtectedRoute>
+          <MainLayout><Clientes /></MainLayout>
+        </ProtectedRoute>
+      } />
+      <Route path="/produtos" element={
+        <ProtectedRoute>
+          <MainLayout><Produtos /></MainLayout>
+        </ProtectedRoute>
+      } />
+      <Route path="/menu" element={
+        <ProtectedRoute>
+          <MainLayout><MenuPublico /></MainLayout>
+        </ProtectedRoute>
+      } />
+      <Route path="/relatorios" element={
+        <ProtectedRoute>
+          <MainLayout><Relatorios /></MainLayout>
+        </ProtectedRoute>
+      } />
+      <Route path="/configuracoes" element={
+        <ProtectedRoute>
+          <MainLayout><Configuracoes /></MainLayout>
+        </ProtectedRoute>
+      } />
+      <Route path="/chat" element={
+        <ProtectedRoute>
+          <MainLayout><Chat /></MainLayout>
+        </ProtectedRoute>
+      } />
       
       <Route path="*" element={<NotFound />} />
     </Routes>
