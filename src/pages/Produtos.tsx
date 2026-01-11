@@ -1,74 +1,22 @@
 import { useState } from 'react';
-import { mockProducts, mockCategories } from '@/data/mockData';
+import { mockProducts, mockCategories, MOCK_COMPANY_ID } from '@/data/mockData';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Switch } from '@/components/ui/switch';
 import { Pizza } from 'lucide-react';
 import type { Product } from '@/types';
-
-function ProductForm({ product, onClose }: { product?: Product; onClose: () => void }) {
-  return (
-    <div className="space-y-4">
-      <div className="space-y-2">
-        <Label htmlFor="name">Nome</Label>
-        <Input id="name" defaultValue={product?.name} placeholder="Nome do produto" />
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="description">Descrição</Label>
-        <Input id="description" defaultValue={product?.description} placeholder="Descrição do produto" />
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="category">Categoria</Label>
-        <Select defaultValue={product?.categoryId}>
-          <SelectTrigger>
-            <SelectValue placeholder="Selecione uma categoria" />
-          </SelectTrigger>
-          <SelectContent>
-            {mockCategories.map((cat) => (
-              <SelectItem key={cat.id} value={cat.id}>
-                {cat.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="price">Preço (R$)</Label>
-        <Input 
-          id="price" 
-          type="number" 
-          step="0.01"
-          defaultValue={product?.price} 
-          placeholder="0,00" 
-        />
-      </div>
-      <div className="flex items-center justify-between">
-        <Label htmlFor="active">Produto Ativo</Label>
-        <Switch id="active" defaultChecked={product?.active ?? true} />
-      </div>
-      <div className="flex gap-2 pt-4">
-        <Button variant="outline" onClick={onClose} className="flex-1">
-          Cancelar
-        </Button>
-        <Button onClick={onClose} className="flex-1">
-          Salvar
-        </Button>
-      </div>
-    </div>
-  );
-}
+import { ProductForm } from '@/components/forms/ProductForm';
 
 export default function Produtos() {
+  const [products, setProducts] = useState<Product[]>(mockProducts);
   const [search, setSearch] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | undefined>();
 
-  const filteredProducts = mockProducts.filter((p) => {
+  const filteredProducts = products.filter((p) => {
     const matchesSearch =
       p.name.toLowerCase().includes(search.toLowerCase()) ||
       p.description?.toLowerCase().includes(search.toLowerCase());
@@ -90,6 +38,23 @@ export default function Produtos() {
     setIsDialogOpen(true);
   };
 
+  const handleFormSubmit = (formData: Omit<Product, 'id' | 'companyId' | 'createdAt'>) => {
+    if (selectedProduct) {
+      // Update existing product
+      setProducts(prev => prev.map(p => p.id === selectedProduct.id ? { ...p, ...formData } : p));
+    } else {
+      // Add new product
+      const newProduct: Product = {
+        id: `prod-${Date.now()}`,
+        companyId: MOCK_COMPANY_ID,
+        createdAt: new Date().toISOString().split('T')[0],
+        ...formData,
+      };
+      setProducts(prev => [...prev, newProduct]);
+    }
+    setIsDialogOpen(false);
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-2">
@@ -100,32 +65,50 @@ export default function Produtos() {
         </div>
       </div>
 
-      <div className="flex flex-col gap-4 md:flex-row">
+      <div className="flex flex-col gap-4 md:flex-row justify-between items-center">
         <Input
           placeholder="Buscar produtos..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="max-w-md"
         />
-        <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-          <SelectTrigger className="w-48">
-            <SelectValue placeholder="Categoria" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Todas as categorias</SelectItem>
-            {mockCategories.map((cat) => (
-              <SelectItem key={cat.id} value={cat.id}>
-                {cat.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <div className="flex gap-4">
+          <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+            <SelectTrigger className="w-48">
+              <SelectValue placeholder="Categoria" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Todas as categorias</SelectItem>
+              {mockCategories.map((cat) => (
+                <SelectItem key={cat.id} value={cat.id}>
+                  {cat.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+              <Button onClick={handleNew}>Adicionar Produto</Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>{selectedProduct ? 'Editar Produto' : 'Novo Produto'}</DialogTitle>
+              </DialogHeader>
+              <ProductForm 
+                product={selectedProduct} 
+                categories={mockCategories} 
+                onClose={() => setIsDialogOpen(false)} 
+                onSubmit={handleFormSubmit} 
+              />
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
 
       {/* Categories Summary */}
       <div className="flex flex-wrap gap-2">
         {mockCategories.map((category) => {
-          const count = mockProducts.filter((p) => p.categoryId === category.id).length;
+          const count = products.filter((p) => p.categoryId === category.id).length;
           return (
             <Button
               key={category.id}
