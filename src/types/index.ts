@@ -7,6 +7,9 @@ export interface Company {
   deliveryFee: number;
   minOrderValue: number;
   openingHours: string;
+  logoUrl?: string;
+  customName?: string;
+  active: boolean;
   createdAt: string;
 }
 

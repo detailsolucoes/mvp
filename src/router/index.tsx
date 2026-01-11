@@ -11,6 +11,7 @@ import Configuracoes from "@/pages/Configuracoes";
 import Chat from "@/pages/Chat";
 import Login from "@/pages/Login";
 import NotFound from "@/pages/NotFound";
+import AdminGlobal from "@/pages/AdminGlobal";
 
 export const AppRouter = () => (
   <BrowserRouter>
@@ -57,6 +58,11 @@ export const AppRouter = () => (
       <Route path="/chat" element={
         <ProtectedRoute>
           <MainLayout><Chat /></MainLayout>
+        </ProtectedRoute>
+      } />
+      <Route path="/admin-global" element={
+        <ProtectedRoute>
+          <MainLayout><AdminGlobal /></MainLayout>
         </ProtectedRoute>
       } />
       

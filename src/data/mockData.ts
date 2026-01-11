@@ -1,7 +1,30 @@
-import type { Customer, Product, Category, Order, DashboardStats } from '@/types';
+import type { Customer, Product, Category, Order, DashboardStats, Company } from '@/types';
 
 // Mock company ID for development
 export const MOCK_COMPANY_ID = 'company-001';
+
+export const mockCompanies: Company[] = [
+  {
+    id: 'company-001',
+    name: 'Detail Soluções',
+    whatsapp: '11999999999',
+    deliveryFee: 8.00,
+    minOrderValue: 30.00,
+    openingHours: '18:00 - 23:00',
+    active: true,
+    createdAt: '2024-01-01',
+  },
+  {
+    id: 'company-002',
+    name: 'Pizzaria do João',
+    whatsapp: '11888888888',
+    deliveryFee: 5.00,
+    minOrderValue: 25.00,
+    openingHours: '17:00 - 00:00',
+    active: true,
+    createdAt: '2024-01-05',
+  }
+];
 
 export const mockCategories: Category[] = [
   { id: 'cat-1', companyId: MOCK_COMPANY_ID, name: 'Pizzas', order: 1, active: true },

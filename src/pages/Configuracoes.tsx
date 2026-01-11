@@ -5,9 +5,13 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
-import { Settings } from 'lucide-react';
+import { Settings, Upload, Building2, Palette } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { mockCompanies } from '@/data/mockData';
 
 export default function Configuracoes() {
+  const { user } = useAuth();
+  const company = mockCompanies.find(c => c.id === user?.companyId) || mockCompanies[0];
   const [settings, setSettings] = useState({
     businessName: 'Pizzaria Bella Napoli',
     whatsapp: '11999887766',
@@ -39,6 +43,46 @@ export default function Configuracoes() {
           <p className="text-muted-foreground">Gerencie as configurações da sua empresa</p>
         </div>
       </div>
+
+      {/* Personalização Visual (Apenas para Admins) */}
+      {user?.role === 'admin' && (
+        <Card className="gradient-border-card border-primary/20">
+          <CardHeader>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <Palette className="h-5 w-5 text-primary" />
+              Personalização Visual
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="customName">Nome Exibido no CRM</Label>
+                <Input
+                  id="customName"
+                  defaultValue={company.customName || company.name}
+                  placeholder="Ex: Minha Loja Inc."
+                />
+                <p className="text-xs text-muted-foreground">Este nome aparecerá na sidebar e nos cabeçalhos.</p>
+              </div>
+              <div className="space-y-2">
+                <Label>Logo da Empresa</Label>
+                <div className="flex items-center gap-4">
+                  <div className="h-16 w-16 rounded-lg border-2 border-dashed border-muted-foreground/25 flex items-center justify-center bg-muted/50 overflow-hidden">
+                    {company.logoUrl ? (
+                      <img src={company.logoUrl} alt="Logo" className="h-full w-full object-cover" />
+                    ) : (
+                      <Building2 className="h-8 w-8 text-muted-foreground/50" />
+                    )}
+                  </div>
+                  <Button variant="outline" size="sm">
+                    <Upload className="mr-2 h-4 w-4" /> Alterar Logo
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Business Info */}
       <Card className="gradient-border-card">

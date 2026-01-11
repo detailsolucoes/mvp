@@ -4,6 +4,8 @@ interface User {
   id: string;
   email: string;
   name: string;
+  role: 'super_admin' | 'admin' | 'attendant';
+  companyId?: string;
 }
 
 interface AuthContextType {
@@ -20,8 +22,9 @@ const STORAGE_KEY = 'detail_auth_user';
 
 // Mock users for demonstration
 const MOCK_USERS = [
-  { id: '1', email: 'admin@detailsolucoes.com', password: '123456', name: 'Administrador' },
-  { id: '2', email: 'test@example.com', password: 'password', name: 'Usuário Teste' },
+  { id: '1', email: 'admin@detailsolucoes.com', password: '123456', name: 'Super Admin', role: 'super_admin' },
+  { id: '2', email: 'empresa1@test.com', password: '123', name: 'Empresa 1 Admin', role: 'admin', companyId: 'company-001' },
+  { id: '3', email: 'empresa2@test.com', password: '123', name: 'Empresa 2 Admin', role: 'admin', companyId: 'company-002' },
 ];
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -54,6 +57,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         id: foundUser.id,
         email: foundUser.email,
         name: foundUser.name,
+        role: foundUser.role as any,
+        companyId: foundUser.companyId,
       };
       setUser(userData);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(userData));
