@@ -4,47 +4,18 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Label } from '@/components/ui/label';
 import { Users } from 'lucide-react';
 import type { Customer } from '@/types';
-
-function CustomerForm({ customer, onClose }: { customer?: Customer; onClose: () => void }) {
-  return (
-    <div className="space-y-4">
-      <div className="space-y-2">
-        <Label htmlFor="name">Nome</Label>
-        <Input id="name" defaultValue={customer?.name} placeholder="Nome do cliente" />
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="whatsapp">WhatsApp</Label>
-        <Input id="whatsapp" defaultValue={customer?.whatsapp} placeholder="11999999999" />
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="address">Endereço</Label>
-        <Input id="address" defaultValue={customer?.address} placeholder="Endereço completo" />
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="notes">Observações</Label>
-        <Input id="notes" defaultValue={customer?.notes} placeholder="Observações sobre o cliente" />
-      </div>
-      <div className="flex gap-2 pt-4">
-        <Button variant="outline" onClick={onClose} className="flex-1">
-          Cancelar
-        </Button>
-        <Button onClick={onClose} className="flex-1">
-          Salvar
-        </Button>
-      </div>
-    </div>
-  );
-}
+import { CustomerForm } from '@/components/forms/CustomerForm';
+import { toast } from '@/hooks/use-toast';
 
 export default function Clientes() {
+  const [customers, setCustomers] = useState<Customer[]>(mockCustomers);
   const [search, setSearch] = useState('');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | undefined>();
 
-  const filteredCustomers = mockCustomers.filter(
+  const filteredCustomers = customers.filter(
     (c) =>
       c.name.toLowerCase().includes(search.toLowerCase()) ||
       c.whatsapp.includes(search) ||
@@ -65,6 +36,25 @@ export default function Clientes() {
     window.open(`https://wa.me/55${whatsapp}`, '_blank');
   };
 
+  const handleFormSubmit = (formData: Omit<Customer, 'id' | 'companyId' | 'totalSpent' | 'orderCount' | 'createdAt'>) => {
+    if (selectedCustomer) {
+      // Update existing customer
+      setCustomers(prev => prev.map(c => c.id === selectedCustomer.id ? { ...c, ...formData } : c));
+    } else {
+      // Add new customer
+      const newCustomer: Customer = {
+        id: `cust-${Date.now()}`,
+        companyId: 'company-001', // Mock company ID
+        totalSpent: 0,
+        orderCount: 0,
+        createdAt: new Date().toISOString().split('T')[0],
+        ...formData,
+      };
+      setCustomers(prev => [...prev, newCustomer]);
+    }
+    setIsDialogOpen(false);
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-2">
@@ -75,13 +65,24 @@ export default function Clientes() {
         </div>
       </div>
 
-      <div className="flex gap-4">
+      <div className="flex flex-col md:flex-row gap-4 justify-between items-center">
         <Input
           placeholder="Buscar por nome, WhatsApp ou endereço..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="max-w-md"
         />
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogTrigger asChild>
+            <Button onClick={handleNew}>Adicionar Cliente</Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>{selectedCustomer ? 'Editar Cliente' : 'Novo Cliente'}</DialogTitle>
+            </DialogHeader>
+            <CustomerForm customer={selectedCustomer} onClose={() => setIsDialogOpen(false)} onSubmit={handleFormSubmit} />
+          </DialogContent>
+        </Dialog>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
