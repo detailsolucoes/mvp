@@ -3,21 +3,15 @@ import { mockOrders } from '@/data/mockData';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ShoppingCart } from 'lucide-react';
 import type { Order, OrderStatus } from '@/types';
+import { ORDER_STATUS_LABELS, PAYMENT_METHOD_LABELS } from '@/lib/constants';
 
 const columns: { id: OrderStatus; label: string }[] = [
-  { id: 'recebido', label: 'Recebido' },
-  { id: 'em_preparo', label: 'Em Preparo' },
-  { id: 'pronto', label: 'Pronto / Saiu' },
-  { id: 'entregue', label: 'Entregue' },
-  { id: 'cancelado', label: 'Cancelado' },
+  { id: 'recebido', label: ORDER_STATUS_LABELS.recebido },
+  { id: 'em_preparo', label: ORDER_STATUS_LABELS.em_preparo },
+  { id: 'pronto', label: ORDER_STATUS_LABELS.pronto },
+  { id: 'entregue', label: ORDER_STATUS_LABELS.entregue },
+  { id: 'cancelado', label: ORDER_STATUS_LABELS.cancelado },
 ];
-
-const paymentLabels: Record<string, string> = {
-  pix: 'PIX',
-  dinheiro: 'Dinheiro',
-  cartao: 'Cartão',
-  pendente: 'Pendente',
-};
 
 function OrderCard({ 
   order, 
@@ -60,7 +54,7 @@ function OrderCard({
 
         <div className="flex justify-between items-center pt-2 border-t border-border">
           <span className="text-xs px-2 py-1 bg-muted rounded">
-            {paymentLabels[order.paymentMethod]}
+            {PAYMENT_METHOD_LABELS[order.paymentMethod]}
           </span>
           <span className="font-bold text-primary">
             R$ {order.total.toFixed(2).replace('.', ',')}
