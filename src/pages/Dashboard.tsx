@@ -1,14 +1,7 @@
 import { mockDashboardStats, mockOrders } from '@/data/mockData';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { LayoutDashboard } from 'lucide-react';
-
-const statusLabels: Record<string, string> = {
-  recebido: 'Recebido',
-  em_preparo: 'Em Preparo',
-  pronto: 'Pronto',
-  entregue: 'Entregue',
-  cancelado: 'Cancelado',
-};
+import { ORDER_STATUS_LABELS } from '@/lib/constants'; // Importando a constante
 
 function StatCard({ title, value, subtitle }: { title: string; value: string | number; subtitle?: string }) {
   return (
@@ -72,7 +65,7 @@ export default function Dashboard() {
             <div className="space-y-3">
               {Object.entries(stats.ordersByStatus).map(([status, count]) => (
                 <div key={status} className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">{statusLabels[status]}</span>
+                  <span className="text-sm text-muted-foreground">{ORDER_STATUS_LABELS[status as keyof typeof ORDER_STATUS_LABELS]}</span>
                   <span className="text-sm font-medium">{count}</span>
                 </div>
               ))}
@@ -119,7 +112,7 @@ export default function Dashboard() {
                 </div>
                 <div className="text-right">
                   <p className="font-medium">R$ {order.total.toFixed(2).replace('.', ',')}</p>
-                  <p className="text-xs text-muted-foreground">{statusLabels[order.status]}</p>
+                  <p className="text-xs text-muted-foreground">{ORDER_STATUS_LABELS[order.status]}</p>
                 </div>
               </div>
             ))}
