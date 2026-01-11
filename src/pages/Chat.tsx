@@ -174,13 +174,13 @@ export default function Chat() {
   return (
     <div className="flex h-[calc(100vh-120px)] bg-background">
       {/* Conversations List */}
-      <div className="w-80 border-r border-border flex flex-col">
-        <div className="p-4 border-b border-border">
-          <div className="flex items-center gap-2 mb-4">
+      <Card className="w-80 gradient-border-card flex flex-col">
+        <CardHeader className="pb-4">
+          <div className="flex items-center gap-2">
             <MessageSquare className="w-5 h-5 text-primary" />
             <h1 className="text-xl font-bold gradient-text">Chat</h1>
           </div>
-          <div className="relative">
+          <div className="relative mt-4">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
             <Input
               placeholder="Buscar conversas..."
@@ -189,9 +189,9 @@ export default function Chat() {
               className="pl-10"
             />
           </div>
-        </div>
+        </CardHeader>
 
-        <div className="flex-1 overflow-y-auto">
+        <CardContent className="flex-1 overflow-y-auto p-0">
           {filteredConversations.map((conversation) => (
             <div
               key={conversation.id}
@@ -224,11 +224,11 @@ export default function Chat() {
               </div>
             </div>
           ))}
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       {/* Chat Area */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col border-l border-border"> {/* Added border-l for separation */}
         {selectedConversation ? (
           <>
             {/* Chat Header */}
