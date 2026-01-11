@@ -95,7 +95,6 @@ export const SidebarLink = ({ link }: SidebarLinkProps) => {
   return (
     <NavLink
       to={link.href}
-      className="flex items-center gap-2 py-2 px-3 rounded-lg transition-all duration-200 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
     >
       {link.icon}
       <motion.span
