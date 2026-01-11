@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sidebar } from '@/components/ui/sidebar'; // Importa Sidebar
+import { Sidebar } from '@/components/ui/sidebar'; // Importa Sidebar, remove SidebarProvider
 import { AppSidebarContent } from '@/components/AppSidebarContent'; // Importa o componente renomeado
 import logo from '@/assets/logo.jpeg';
 
