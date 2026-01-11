@@ -1,23 +1,24 @@
-"use client";
+import { NavLink as RouterNavLink, NavLinkProps } from 'react-router-dom';
+import { cn } from '@/lib/utils';
+import React from 'react';
 
-import * as React from "react";
-import { NavLink as RouterNavLink, NavLinkProps } from "react-router-dom";
-import { cn } from "@/lib/utils";
+interface CustomNavLinkProps extends NavLinkProps {
+  children: React.ReactNode;
+}
 
-const NavLink = React.forwardRef<HTMLAnchorElement, NavLinkProps>(
-  ({ className, children, ...props }, ref) => {
+export const NavLink = React.forwardRef<HTMLAnchorElement, CustomNavLinkProps>(
+  ({ children, className, ...props }, ref) => {
     return (
       <RouterNavLink
         ref={ref}
-        className={(navData) => {
-          const baseClasses = "flex items-center gap-2 py-2 px-3 rounded-lg transition-all duration-200";
-          const activeClasses = navData.isActive ? "bg-sidebar-primary text-sidebar-primary-foreground" : "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground";
-          
-          // Se className das props for uma função, chame-a com navData
-          const userProvidedClasses = typeof className === 'function' ? className(navData) : className;
-
-          return cn(baseClasses, activeClasses, userProvidedClasses);
-        }}
+        className={({ isActive }) =>
+          cn(
+            "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+            "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+            isActive && "bg-sidebar-primary text-sidebar-primary-foreground",
+            className
+          )
+        }
         {...props}
       >
         {children}
@@ -25,6 +26,5 @@ const NavLink = React.forwardRef<HTMLAnchorElement, NavLinkProps>(
     );
   }
 );
-NavLink.displayName = "NavLink";
 
-export { NavLink };
+NavLink.displayName = "NavLink";
