@@ -69,9 +69,44 @@ const menuItems = [
 
 const adminItems = [
   {
-    title: 'Admin Global',
-    url: '/admin-global',
+    title: 'Dashboard Global',
+    url: '/admin-global/dashboard',
+    icon: LayoutDashboard
+  },
+  {
+    title: 'Empresas',
+    url: '/admin-global/empresas',
+    icon: Users
+  },
+  {
+    title: 'Usuários',
+    url: '/admin-global/usuarios',
     icon: ShieldCheck
+  },
+  {
+    title: 'Planos',
+    url: '/admin-global/planos',
+    icon: BarChart3
+  },
+  {
+    title: 'Relatórios',
+    url: '/admin-global/relatorios',
+    icon: BarChart3
+  },
+  {
+    title: 'Sistema',
+    url: '/admin-global/sistema',
+    icon: Settings
+  },
+  {
+    title: 'Notificações',
+    url: '/admin-global/notificacoes',
+    icon: Bell
+  },
+  {
+    title: 'Configurações',
+    url: '/admin-global/configuracoes',
+    icon: Settings
   }
 ];
 
