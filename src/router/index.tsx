@@ -61,7 +61,7 @@ export const AppRouter = () => (
         </ProtectedRoute>
       } />
       <Route path="/admin-global" element={
-        <ProtectedRoute>
+        <ProtectedRoute requiredRole="super_admin">
           <MainLayout><AdminGlobal /></MainLayout>
         </ProtectedRoute>
       } />

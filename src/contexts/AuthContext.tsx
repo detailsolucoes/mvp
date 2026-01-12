@@ -23,8 +23,8 @@ const STORAGE_KEY = 'detail_auth_user';
 // Mock users for demonstration
 const MOCK_USERS = [
   { id: '1', email: 'admin@detailsolucoes.com', password: '123456', name: 'Super Admin', role: 'super_admin' },
-  { id: '2', email: 'empresa1@test.com', password: '123', name: 'Empresa 1 Admin', role: 'admin', companyId: 'company-001' },
-  { id: '3', email: 'empresa2@test.com', password: '123', name: 'Empresa 2 Admin', role: 'admin', companyId: 'company-002' },
+  { id: '2', email: 'empresa1@test.com', password: '123456', name: 'Empresa 1 Admin', role: 'admin', companyId: 'company-001' },
+  { id: '3', email: 'empresa2@test.com', password: '123456', name: 'Empresa 2 Admin', role: 'admin', companyId: 'company-002' },
 ];
 
 export function AuthProvider({ children }: { children: ReactNode }) {
