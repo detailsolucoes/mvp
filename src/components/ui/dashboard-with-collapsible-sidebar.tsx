@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
@@ -25,69 +25,21 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { mockCompanies } from '@/data/mockData';
 
 const menuItems = [
-  { 
-    title: 'Dashboard', 
-    url: '/', 
-    icon: LayoutDashboard 
-  },
-  { 
-    title: 'Pedidos', 
-    url: '/pedidos', 
-    icon: ShoppingCart 
-  },
-  { 
-    title: 'Clientes', 
-    url: '/clientes', 
-    icon: Users 
-  },
-  { 
-    title: 'Produtos', 
-    url: '/produtos', 
-    icon: Pizza 
-  },
-  { 
-    title: 'Menu Público', 
-    url: '/menu', 
-    icon: MenuIcon 
-  },
-  { 
-    title: 'Relatórios', 
-    url: '/relatorios', 
-    icon: BarChart3 
-  },
-  { 
-    title: 'Chat', 
-    url: '/chat', 
-    icon: MessageSquare 
-  },
-  { 
-    title: 'Usuários', 
-    url: '/usuarios', 
-    icon: Users 
-  },
-  { 
-    title: 'Configurações', 
-    url: '/configuracoes', 
-    icon: Settings 
-  },
+  { title: 'Dashboard', url: '/', icon: LayoutDashboard },
+  { title: 'Pedidos', url: '/pedidos', icon: ShoppingCart },
+  { title: 'Clientes', url: '/clientes', icon: Users },
+  { title: 'Produtos', url: '/produtos', icon: Pizza },
+  { title: 'Menu Público', url: '/menu', icon: MenuIcon },
+  { title: 'Relatórios', url: '/relatorios', icon: BarChart3 },
+  { title: 'Chat', url: '/chat', icon: MessageSquare },
+  { title: 'Usuários', url: '/usuarios', icon: Users },
+  { title: 'Configurações', url: '/configuracoes', icon: Settings },
 ];
 
 const adminItems = [
-  {
-    title: 'Dashboard',
-    url: '/admin-global/dashboard',
-    icon: LayoutDashboard
-  },
-  {
-    title: 'Empresas',
-    url: '/admin-global/empresas',
-    icon: Users
-  },
-  {
-    title: 'Usuários',
-    url: '/admin-global/usuarios',
-    icon: ShieldCheck
-  }
+  { title: 'Dashboard', url: '/admin-global/dashboard', icon: LayoutDashboard },
+  { title: 'Empresas', url: '/admin-global/empresas', icon: Users },
+  { title: 'Usuários', url: '/admin-global/usuarios', icon: ShieldCheck }
 ];
 
 export const MainLayout = ({ children }: { children: React.ReactNode }) => {
@@ -110,15 +62,13 @@ export const MainLayout = ({ children }: { children: React.ReactNode }) => {
 const Sidebar = () => {
   const [open, setOpen] = useState(true);
   const location = useLocation();
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
     navigate('/login');
   };
-
-  const { user } = useAuth();
 
   return (
     <nav
@@ -147,7 +97,7 @@ const Sidebar = () => {
               return true;
             }
             if (user?.role === 'attendant') {
-              if (item.url === '/' || item.url === '/relatorios' || item.url === '/configuracoes' || item.url === '/usuarios') {
+              if (['/', '/relatorios', '/configuracoes', '/usuarios'].includes(item.url)) {
                 return false;
               }
             }
@@ -173,9 +123,7 @@ const Sidebar = () => {
           <div className="grid h-full w-12 place-content-center">
             <LogOut className="h-4 w-4" />
           </div>
-          {open && (
-            <span className="text-sm font-medium">Sair</span>
-          )}
+          {open && <span className="text-sm font-medium">Sair</span>}
         </button>
         <ToggleClose open={open} setOpen={setOpen} />
       </div>
@@ -196,13 +144,8 @@ const Option = ({ Icon, title, url, selected, open }: any) => {
       <div className="grid h-full w-12 place-content-center">
         <Icon className="h-4 w-4" />
       </div>
-      
       {open && (
-        <span
-          className={`text-sm font-medium transition-opacity duration-200 ${
-            open ? 'opacity-100' : 'opacity-0'
-          }`}
-        >
+        <span className={`text-sm font-medium transition-opacity duration-200 ${open ? 'opacity-100' : 'opacity-0'}`}>
           {title}
         </span>
       )}
@@ -235,9 +178,7 @@ const TitleSection = ({ open }) => {
             </div>
           )}
         </div>
-        {open && (
-          <ChevronDown className="h-4 w-4 text-gray-400 dark:text-gray-500" />
-        )}
+        {open && <ChevronDown className="h-4 w-4 text-gray-400 dark:text-gray-500" />}
       </div>
     </div>
   );
@@ -270,11 +211,7 @@ const ToggleClose = ({ open, setOpen }) => {
           />
         </div>
         {open && (
-          <span
-            className={`text-sm font-medium text-gray-600 dark:text-gray-300 transition-opacity duration-200 ${
-              open ? 'opacity-100' : 'opacity-0'
-            }`}
-          >
+          <span className={`text-sm font-medium text-gray-600 dark:text-gray-300 transition-opacity duration-200 ${open ? 'opacity-100' : 'opacity-0'}`}>
             Recolher
           </span>
         )}
@@ -291,7 +228,6 @@ const ExampleContent = ({ isDark, setIsDark, children }: any) => {
 
   return (
     <div className="flex-1 bg-gray-50 dark:bg-gray-950 p-6 overflow-auto">
-      {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">{pageTitle}</h1>
@@ -308,22 +244,14 @@ const ExampleContent = ({ isDark, setIsDark, children }: any) => {
             onClick={() => setIsDark(!isDark)}
             className="flex h-10 w-10 items-center justify-center rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
           >
-            {isDark ? (
-              <Sun className="h-4 w-4" />
-            ) : (
-              <Moon className="h-4 w-4" />
-            )}
+            {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
           </button>
           <button className="p-2 rounded-lg bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors">
             <User className="h-5 w-5" />
           </button>
         </div>
       </div>
-      
-      {/* Page Content */}
-      <div className="w-full">
-        {children}
-      </div>
+      <div className="w-full">{children}</div>
     </div>
   );
 };
