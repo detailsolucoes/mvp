@@ -128,7 +128,7 @@ const Sidebar = () => {
     >
       <TitleSection open={open} />
 
-      <div className="space-y-1 mb-8 flex-1 overflow-y-auto overflow-x-hidden">
+      <div className="space-y-1 flex-1 overflow-y-auto overflow-x-hidden">
         {user?.role === 'super_admin' && adminItems.map((item) => (
           <Option
             key={item.url}
@@ -142,12 +142,10 @@ const Sidebar = () => {
         
         {user?.role !== 'super_admin' && menuItems
           .filter(item => {
-            // Se for admin de empresa, remover Configurações e manter Usuários
             if (user?.role === 'admin') {
               if (item.url === '/configuracoes') return false;
               return true;
             }
-            // Se for atendente, remover Dashboard, Relatórios, Configurações e Usuários
             if (user?.role === 'attendant') {
               if (item.url === '/' || item.url === '/relatorios' || item.url === '/configuracoes' || item.url === '/usuarios') {
                 return false;
@@ -167,7 +165,7 @@ const Sidebar = () => {
           ))}
       </div>
 
-      <div className="border-t border-gray-200 dark:border-gray-800 pt-4 space-y-1 mb-12">
+      <div className="mt-auto border-t border-gray-200 dark:border-gray-800 pt-2 pb-12">
         <button
           onClick={handleLogout}
           className={`relative flex h-11 w-full items-center rounded-md transition-all duration-200 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-200`}
@@ -179,9 +177,8 @@ const Sidebar = () => {
             <span className="text-sm font-medium">Sair</span>
           )}
         </button>
+        <ToggleClose open={open} setOpen={setOpen} />
       </div>
-
-      <ToggleClose open={open} setOpen={setOpen} />
     </nav>
   );
 };
@@ -262,10 +259,10 @@ const ToggleClose = ({ open, setOpen }) => {
   return (
     <button
       onClick={() => setOpen(!open)}
-      className="absolute bottom-0 left-0 right-0 border-t border-gray-200 dark:border-gray-800 transition-colors hover:bg-gray-50 dark:hover:bg-gray-800"
+      className="w-full border-t border-gray-200 dark:border-gray-800 transition-colors hover:bg-gray-50 dark:hover:bg-gray-800 mt-2"
     >
-      <div className="flex items-center p-3">
-        <div className="grid size-10 place-content-center">
+      <div className="flex items-center h-11">
+        <div className="grid h-full w-12 place-content-center">
           <ChevronsRight
             className={`h-4 w-4 transition-transform duration-300 text-gray-500 dark:text-gray-400 ${
               open ? "rotate-180" : ""
