@@ -17,12 +17,19 @@ import DashboardGlobal from "@/pages/admin-global/DashboardGlobal";
 import Empresas from "@/pages/admin-global/Empresas";
 import Usuarios from "@/pages/admin-global/Usuarios";
 
-// Componente para redirecionar atendentes que tentam acessar a raiz
+// Componente para redirecionar usuários que acessam a raiz baseados em seus papéis
 const RootRedirect = () => {
   const { user } = useAuth();
+  
+  if (user?.role === 'super_admin') {
+    return <Navigate to="/admin-global/dashboard" replace />;
+  }
+  
   if (user?.role === 'attendant') {
     return <Navigate to="/pedidos" replace />;
   }
+  
+  // Admin de empresa vai para o Dashboard padrão
   return <Dashboard />;
 };
 
