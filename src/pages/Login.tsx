@@ -12,7 +12,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { Crown, Building2, ArrowRight } from 'lucide-react';
+import { Crown, Building2, ArrowRight, UserCircle } from 'lucide-react';
 
 const loginSchema = z.object({
   email: z.string().email('E-mail inválido'),
@@ -49,6 +49,15 @@ const userPresets: UserPreset[] = [
     description: 'Acesso ao painel da empresa com personalização de logo e nome',
     icon: <Building2 className="w-5 h-5" />,
     color: 'from-blue-500 to-cyan-500',
+  },
+  {
+    name: 'Atendente - Detail Soluções',
+    email: 'atendente@test.com',
+    password: '123456',
+    role: 'attendant',
+    description: 'Acesso operacional para atendimento e gestão de pedidos',
+    icon: <UserCircle className="w-5 h-5" />,
+    color: 'from-emerald-500 to-teal-500',
   },
 ];
 
