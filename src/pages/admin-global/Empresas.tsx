@@ -1,64 +1,101 @@
+import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Eye, Edit, ToggleRight } from "lucide-react";
+import { Eye, Edit, ToggleRight, Plus } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { toast } from '@/hooks/use-toast';
+
+const empresaSchema = z.object({
+  nome: z.string().min(2, 'Nome deve ter pelo menos 2 caracteres'),
+  segmento: z.string().min(2, 'Segmento é obrigatório'),
+  whatsapp: z.string().regex(/^\d{11}$/, 'WhatsApp inválido (11 dígitos)'),
+  plano: z.string().min(1, 'Selecione um plano'),
+});
+
+type EmpresaFormValues = z.infer<typeof empresaSchema>;
+
+function EmpresaForm({ onClose, onSubmit }: { onClose: () => void, onSubmit: (data: EmpresaFormValues) => void }) {
+  const form = useForm<EmpresaFormValues>({
+    resolver: zodResolver(empresaSchema),
+    defaultValues: { nome: '', segmento: '', whatsapp: '', plano: 'Standard' },
+  });
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <FormField control={form.control} name="nome" render={({ field }) => (
+          <FormItem><FormLabel>Nome da Empresa</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
+        )} />
+        <FormField control={form.control} name="segmento" render={({ field }) => (
+          <FormItem><FormLabel>Segmento</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
+        )} />
+        <FormField control={form.control} name="whatsapp" render={({ field }) => (
+          <FormItem><FormLabel>WhatsApp (apenas números)</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
+        )} />
+        <FormField control={form.control} name="plano" render={({ field }) => (
+          <FormItem><FormLabel>Plano</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
+        )} />
+        <div className="flex gap-2 pt-4">
+          <Button variant="outline" onClick={onClose} className="flex-1" type="button">Cancelar</Button>
+          <Button type="submit" className="flex-1">Salvar</Button>
+        </div>
+      </form>
+    </Form>
+  );
+}
 
 export default function Empresas() {
-  const mockEmpresas = [
-    {
-      id: "1",
-      nome: "Detail Soluções",
-      segmento: "Pizza",
-      whatsapp: "11999999999",
+  const [empresas, setEmpresas] = useState([
+    { id: "1", nome: "Detail Soluções", segmento: "Pizza", whatsapp: "11999999999", status: "Ativa", plano: "Premium", faturamento: "R$ 12.450,00" },
+    { id: "2", nome: "Pizzaria do João", segmento: "Pizza", whatsapp: "11888888888", status: "Ativa", plano: "Standard", faturamento: "R$ 8.900,00" },
+    { id: "3", nome: "Burger House", segmento: "Hamburger", whatsapp: "11777777777", status: "Inativa", plano: "Basic", faturamento: "R$ 0,00" },
+    { id: "4", sushi: "Sushi Express", nome: "Sushi Express", segmento: "Sushi", whatsapp: "11666666666", status: "Ativa", plano: "Premium", faturamento: "R$ 15.200,00" },
+  ]);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const handleAddEmpresa = (data: EmpresaFormValues) => {
+    const newEmpresa = {
+      id: String(empresas.length + 1),
+      ...data,
       status: "Ativa",
-      plano: "Premium",
-      faturamento: "R$ 12.450,00",
-    },
-    {
-      id: "2",
-      nome: "Pizzaria do João",
-      segmento: "Pizza",
-      whatsapp: "11888888888",
-      status: "Ativa",
-      plano: "Standard",
-      faturamento: "R$ 8.900,00",
-    },
-    {
-      id: "3",
-      nome: "Burger House",
-      segmento: "Hamburger",
-      whatsapp: "11777777777",
-      status: "Inativa",
-      plano: "Basic",
-      faturamento: "R$ 0,00",
-    },
-    {
-      id: "4",
-      nome: "Sushi Express",
-      segmento: "Sushi",
-      whatsapp: "11666666666",
-      status: "Ativa",
-      plano: "Premium",
-      faturamento: "R$ 15.200,00",
-    },
-  ];
+      faturamento: "R$ 0,00"
+    };
+    setEmpresas([...empresas, newEmpresa]);
+    setIsDialogOpen(false);
+    toast({ title: "Empresa cadastrada!", description: `${data.nome} foi adicionada com sucesso.` });
+  };
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Empresas</h1>
-        <p className="text-muted-foreground">Gerenciar todas as empresas cadastradas no sistema</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Empresas</h1>
+          <p className="text-muted-foreground">Gerenciar todas as empresas cadastradas no sistema</p>
+        </div>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogTrigger asChild>
+            <Button className="gap-2"><Plus className="h-4 w-4" /> Nova Empresa</Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader><DialogTitle>Cadastrar Nova Empresa</DialogTitle></DialogHeader>
+            <EmpresaForm onClose={() => setIsDialogOpen(false)} onSubmit={handleAddEmpresa} />
+          </DialogContent>
+        </Dialog>
       </div>
 
       <div className="flex gap-4">
         <Input placeholder="Buscar empresa por nome ou WhatsApp..." className="max-w-sm" />
-        <Button>+ Nova Empresa</Button>
       </div>
 
       <Card>
         <CardHeader>
           <CardTitle>Lista de Empresas</CardTitle>
-          <CardDescription>Total: {mockEmpresas.length} empresas</CardDescription>
+          <CardDescription>Total: {empresas.length} empresas</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
@@ -75,33 +112,23 @@ export default function Empresas() {
                 </tr>
               </thead>
               <tbody>
-                {mockEmpresas.map((empresa) => (
+                {empresas.map((empresa) => (
                   <tr key={empresa.id} className="border-b hover:bg-muted/50">
                     <td className="py-3 px-4 font-medium">{empresa.nome}</td>
                     <td className="py-3 px-4">{empresa.segmento}</td>
                     <td className="py-3 px-4">{empresa.whatsapp}</td>
                     <td className="py-3 px-4">
                       <span className={`px-2 py-1 rounded text-xs font-medium ${
-                        empresa.status === "Ativa"
-                          ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-                          : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
-                      }`}>
-                        {empresa.status}
-                      </span>
+                        empresa.status === "Ativa" ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200" : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
+                      }`}>{empresa.status}</span>
                     </td>
                     <td className="py-3 px-4">{empresa.plano}</td>
                     <td className="py-3 px-4">{empresa.faturamento}</td>
                     <td className="py-3 px-4">
                       <div className="flex gap-2">
-                        <Button variant="ghost" size="sm" title="Ver detalhes">
-                          <Eye className="h-4 w-4" />
-                        </Button>
-                        <Button variant="ghost" size="sm" title="Editar">
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button variant="ghost" size="sm" title="Ativar/Inativar">
-                          <ToggleRight className="h-4 w-4" />
-                        </Button>
+                        <Button variant="ghost" size="sm"><Eye className="h-4 w-4" /></Button>
+                        <Button variant="ghost" size="sm"><Edit className="h-4 w-4" /></Button>
+                        <Button variant="ghost" size="sm"><ToggleRight className="h-4 w-4" /></Button>
                       </div>
                     </td>
                   </tr>
