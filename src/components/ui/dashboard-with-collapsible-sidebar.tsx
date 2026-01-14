@@ -69,6 +69,11 @@ const menuItems = [
 
 const adminItems = [
   {
+    title: 'Dashboard',
+    url: '/admin-global/dashboard',
+    icon: LayoutDashboard
+  },
+  {
     title: 'Empresas',
     url: '/admin-global/empresas',
     icon: Users
@@ -132,8 +137,12 @@ const Sidebar = () => {
         
         {user?.role !== 'super_admin' && menuItems
           .filter(item => {
-            // Se for admin de empresa, remover Configurações
-            if (user?.role === 'admin' && item.url === '/configuracoes') return false;
+            // Se for atendente, remover Dashboard, Relatórios e Configurações
+            if (user?.role === 'attendant') {
+              if (item.url === '/' || item.url === '/relatorios' || item.url === '/configuracoes') {
+                return false;
+              }
+            }
             return true;
           })
           .map((item) => (

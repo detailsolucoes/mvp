@@ -1,6 +1,7 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { MainLayout } from "@/components/MainLayout";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { useAuth } from "@/contexts/AuthContext";
 import Dashboard from "@/pages/Dashboard";
 import Pedidos from "@/pages/Pedidos";
 import Clientes from "@/pages/Clientes";
@@ -22,6 +23,15 @@ import Sistema from "@/pages/admin-global/Sistema";
 import Notificacoes from "@/pages/admin-global/Notificacoes";
 import ConfiguracoesGlobal from "@/pages/admin-global/ConfiguracoesGlobal";
 
+// Componente para redirecionar atendentes que tentam acessar a raiz
+const RootRedirect = () => {
+  const { user } = useAuth();
+  if (user?.role === 'attendant') {
+    return <Navigate to="/pedidos" replace />;
+  }
+  return <Dashboard />;
+};
+
 export const AppRouter = () => (
   <BrowserRouter>
     <Routes>
@@ -31,7 +41,7 @@ export const AppRouter = () => (
       {/* Protected routes with layout */}
       <Route path="/" element={
         <ProtectedRoute>
-          <MainLayout><Dashboard /></MainLayout>
+          <MainLayout><RootRedirect /></MainLayout>
         </ProtectedRoute>
       } />
       <Route path="/pedidos" element={
@@ -55,12 +65,12 @@ export const AppRouter = () => (
         </ProtectedRoute>
       } />
       <Route path="/relatorios" element={
-        <ProtectedRoute>
+        <ProtectedRoute requiredRole="admin">
           <MainLayout><Relatorios /></MainLayout>
         </ProtectedRoute>
       } />
       <Route path="/configuracoes" element={
-        <ProtectedRoute>
+        <ProtectedRoute requiredRole="admin">
           <MainLayout><Configuracoes /></MainLayout>
         </ProtectedRoute>
       } />
