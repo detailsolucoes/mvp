@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { mockOrders } from '@/data/mockData';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ShoppingCart } from 'lucide-react';
+import { ShoppingCart, Plus } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { OrderForm } from '@/components/forms/OrderForm';
 import type { Order, OrderStatus } from '@/types';
 import { ORDER_STATUS_LABELS, PAYMENT_METHOD_LABELS } from '@/lib/constants';
 
@@ -117,6 +120,7 @@ function KanbanColumn({
 export default function Pedidos() {
   const [orders, setOrders] = useState<Order[]>(mockOrders);
   const [draggedOrderId, setDraggedOrderId] = useState<string | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleDragStart = (e: React.DragEvent, orderId: string) => {
     setDraggedOrderId(orderId);
@@ -145,18 +149,39 @@ export default function Pedidos() {
     console.log(`Order ${draggedOrderId} moved to ${newStatus} - webhook would be triggered`);
   };
 
+  const handleCreateOrder = (newOrder: Order) => {
+    setOrders(prev => [newOrder, ...prev]);
+    setIsDialogOpen(false);
+  };
+
   const getOrdersByStatus = (status: OrderStatus) => {
     return orders.filter((order) => order.status === status);
   };
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-2">
-        <ShoppingCart className="w-6 h-6 text-primary" />
-        <div>
-          <h1 className="text-2xl font-bold gradient-text">Pedidos</h1>
-          <p className="text-muted-foreground">Arraste os pedidos para alterar o status</p>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <ShoppingCart className="w-6 h-6 text-primary" />
+          <div>
+            <h1 className="text-2xl font-bold gradient-text">Pedidos</h1>
+            <p className="text-muted-foreground">Arraste os pedidos para alterar o status</p>
+          </div>
         </div>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogTrigger asChild>
+            <Button className="gap-2">
+              <Plus className="h-4 w-4" />
+              Novo Pedido
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Criar Novo Pedido Manual</DialogTitle>
+            </DialogHeader>
+            <OrderForm onClose={() => setIsDialogOpen(false)} onSubmit={handleCreateOrder} />
+          </DialogContent>
+        </Dialog>
       </div>
 
       <div className="flex gap-4 overflow-x-auto pb-4">
