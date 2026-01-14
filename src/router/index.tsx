@@ -9,6 +9,7 @@ import Produtos from "@/pages/Produtos";
 import MenuPublico from "@/pages/MenuPublico";
 import Relatorios from "@/pages/Relatorios";
 import Configuracoes from "@/pages/Configuracoes";
+import EmpresaUsuarios from "@/pages/EmpresaUsuarios";
 import Chat from "@/pages/Chat";
 import Login from "@/pages/Login";
 import NotFound from "@/pages/NotFound";
@@ -69,8 +70,13 @@ export const AppRouter = () => (
           <MainLayout><Relatorios /></MainLayout>
         </ProtectedRoute>
       } />
-      <Route path="/configuracoes" element={
+      <Route path="/usuarios" element={
         <ProtectedRoute requiredRole="admin">
+          <MainLayout><EmpresaUsuarios /></MainLayout>
+        </ProtectedRoute>
+      } />
+      <Route path="/configuracoes" element={
+        <ProtectedRoute requiredRole="super_admin">
           <MainLayout><Configuracoes /></MainLayout>
         </ProtectedRoute>
       } />

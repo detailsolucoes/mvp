@@ -61,6 +61,11 @@ const menuItems = [
     icon: MessageSquare 
   },
   { 
+    title: 'Usuários', 
+    url: '/usuarios', 
+    icon: Users 
+  },
+  { 
     title: 'Configurações', 
     url: '/configuracoes', 
     icon: Settings 
@@ -137,9 +142,14 @@ const Sidebar = () => {
         
         {user?.role !== 'super_admin' && menuItems
           .filter(item => {
-            // Se for atendente, remover Dashboard, Relatórios e Configurações
+            // Se for admin de empresa, remover Configurações e manter Usuários
+            if (user?.role === 'admin') {
+              if (item.url === '/configuracoes') return false;
+              return true;
+            }
+            // Se for atendente, remover Dashboard, Relatórios, Configurações e Usuários
             if (user?.role === 'attendant') {
-              if (item.url === '/' || item.url === '/relatorios' || item.url === '/configuracoes') {
+              if (item.url === '/' || item.url === '/relatorios' || item.url === '/configuracoes' || item.url === '/usuarios') {
                 return false;
               }
             }

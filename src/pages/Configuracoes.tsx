@@ -5,25 +5,14 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
-import { Settings, Upload, Building2, Palette, Users, UserPlus, Mail, Shield } from 'lucide-react';
+import { Settings, Upload, Building2, Palette } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { mockCompanies } from '@/data/mockData';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { UserForm } from '@/components/forms/UserForm';
-import type { User as UserType } from '@/types';
 
 export default function Configuracoes() {
   const { user } = useAuth();
   const company = mockCompanies.find(c => c.id === user?.companyId) || mockCompanies[0];
   
-  // Mock users for the company
-  const [companyUsers, setCompanyUsers] = useState<UserType[]>([
-    { id: '1', name: 'Admin Teste', email: 'admin@test.com', role: 'admin', companyId: company.id, createdAt: '2023-01-01' },
-    { id: '2', name: 'Atendente 1', email: 'atendente1@test.com', role: 'attendant', companyId: company.id, createdAt: '2023-01-02' },
-  ]);
-
-  const [isUserDialogOpen, setIsUserDialogOpen] = useState(false);
-
   const [settings, setSettings] = useState({
     businessName: company.name,
     whatsapp: company.whatsapp,
@@ -45,17 +34,6 @@ export default function Configuracoes() {
     console.log('Saving settings:', settings);
   };
 
-  const handleAddUser = (userData: any) => {
-    const newUser: UserType = {
-      id: `user-${Date.now()}`,
-      companyId: company.id,
-      createdAt: new Date().toISOString().split('T')[0],
-      ...userData
-    };
-    setCompanyUsers(prev => [...prev, newUser]);
-    setIsUserDialogOpen(false);
-  };
-
   return (
     <div className="space-y-6 max-w-4xl">
       <div className="flex items-center gap-2">
@@ -65,57 +43,6 @@ export default function Configuracoes() {
           <p className="text-muted-foreground">Gerencie as configurações da sua empresa</p>
         </div>
       </div>
-
-      {/* Gerenciamento de Usuários (Apenas para Admins) */}
-      {user?.role === 'admin' && (
-        <Card className="gradient-border-card border-primary/20">
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-lg flex items-center gap-2">
-              <Users className="h-5 w-5 text-primary" />
-              Gerenciamento de Usuários
-            </CardTitle>
-            <Dialog open={isUserDialogOpen} onOpenChange={setIsUserDialogOpen}>
-              <DialogTrigger asChild>
-                <Button size="sm" className="gap-2">
-                  <UserPlus className="h-4 w-4" />
-                  Novo Usuário
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                  <DialogTitle>Adicionar Novo Usuário</DialogTitle>
-                </DialogHeader>
-                <UserForm onClose={() => setIsUserDialogOpen(false)} onSubmit={handleAddUser} />
-              </DialogContent>
-            </Dialog>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {companyUsers.map((u) => (
-                <div key={u.id} className="flex items-center justify-between p-3 rounded-lg border bg-card hover:bg-accent/50 transition-colors">
-                  <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-                      <Users className="h-5 w-5 text-primary" />
-                    </div>
-                    <div>
-                      <p className="font-medium text-sm">{u.name}</p>
-                      <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                        <span className="flex items-center gap-1">
-                          <Mail className="h-3 w-3" /> {u.email}
-                        </span>
-                        <span className="flex items-center gap-1 capitalize">
-                          <Shield className="h-3 w-3" /> {u.role === 'admin' ? 'Administrador' : 'Atendente'}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <Button variant="ghost" size="sm">Editar</Button>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      )}
 
       {/* Personalização Visual (Apenas para Admins) */}
       {user?.role === 'admin' && (
