@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { mockOrders } from '@/data/mockData';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ShoppingCart, Plus } from 'lucide-react';
+import { ShoppingCart, Plus, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { OrderForm } from '@/components/forms/OrderForm';
@@ -18,10 +18,12 @@ const columns: { id: OrderStatus; label: string }[] = [
 
 function OrderCard({ 
   order, 
-  onDragStart 
+  onDragStart,
+  onAdvance
 }: { 
   order: Order; 
   onDragStart: (e: React.DragEvent, orderId: string) => void;
+  onAdvance: (orderId: string, currentStatus: OrderStatus) => void;
 }) {
   const lastFourDigits = order.customerWhatsapp.slice(-4);
   const orderTime = new Date(order.createdAt).toLocaleTimeString('pt-BR', {
@@ -29,11 +31,13 @@ function OrderCard({
     minute: '2-digit',
   });
 
+  const canAdvance = order.status !== 'entregue' && order.status !== 'cancelado';
+
   return (
     <Card
       draggable
       onDragStart={(e) => onDragStart(e, order.id)}
-      className="gradient-border-card cursor-grab active:cursor-grabbing hover:bg-muted/30 transition-colors"
+      className="gradient-border-card cursor-grab active:cursor-grabbing hover:bg-muted/30 transition-colors relative group"
     >
       <CardContent className="p-4 space-y-3">
         <div className="flex justify-between items-start">
@@ -59,9 +63,25 @@ function OrderCard({
           <span className="text-xs px-2 py-1 bg-muted rounded">
             {PAYMENT_METHOD_LABELS[order.paymentMethod]}
           </span>
-          <span className="font-bold text-primary">
-            R$ {order.total.toFixed(2).replace('.', ',')}
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="font-bold text-primary">
+              R$ {order.total.toFixed(2).replace('.', ',')}
+            </span>
+            {canAdvance && (
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-7 w-7 rounded-full bg-primary/10 hover:bg-primary hover:text-primary-foreground transition-all opacity-0 group-hover:opacity-100"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onAdvance(order.id, order.status);
+                }}
+                title="Avançar etapa"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            )}
+          </div>
         </div>
 
         {order.notes && (
@@ -80,12 +100,14 @@ function KanbanColumn({
   onDragStart,
   onDrop,
   onDragOver,
+  onAdvance,
 }: {
   column: { id: OrderStatus; label: string };
   orders: Order[];
   onDragStart: (e: React.DragEvent, orderId: string) => void;
   onDrop: (e: React.DragEvent, status: OrderStatus) => void;
   onDragOver: (e: React.DragEvent) => void;
+  onAdvance: (orderId: string, currentStatus: OrderStatus) => void;
 }) {
   return (
     <div
@@ -104,7 +126,12 @@ function KanbanColumn({
         </CardHeader>
         <CardContent className="p-2 space-y-2 min-h-[calc(100vh-300px)] overflow-y-auto">
           {orders.map((order) => (
-            <OrderCard key={order.id} order={order} onDragStart={onDragStart} />
+            <OrderCard 
+              key={order.id} 
+              order={order} 
+              onDragStart={onDragStart} 
+              onAdvance={onAdvance}
+            />
           ))}
           {orders.length === 0 && (
             <div className="py-8 text-center text-muted-foreground text-sm">
@@ -136,17 +163,28 @@ export default function Pedidos() {
     e.preventDefault();
     if (!draggedOrderId) return;
 
+    updateOrderStatus(draggedOrderId, newStatus);
+    setDraggedOrderId(null);
+  };
+
+  const updateOrderStatus = (orderId: string, newStatus: OrderStatus) => {
     setOrders((prevOrders) =>
       prevOrders.map((order) =>
-        order.id === draggedOrderId
+        order.id === orderId
           ? { ...order, status: newStatus, updatedAt: new Date().toISOString() }
           : order
       )
     );
-    setDraggedOrderId(null);
+  };
 
-    // Here we would trigger a webhook for n8n integration
-    console.log(`Order ${draggedOrderId} moved to ${newStatus} - webhook would be triggered`);
+  const handleAdvance = (orderId: string, currentStatus: OrderStatus) => {
+    const statusFlow: OrderStatus[] = ['recebido', 'em_preparo', 'pronto', 'entregue'];
+    const currentIndex = statusFlow.indexOf(currentStatus);
+    
+    if (currentIndex !== -1 && currentIndex < statusFlow.length - 1) {
+      const nextStatus = statusFlow[currentIndex + 1];
+      updateOrderStatus(orderId, nextStatus);
+    }
   };
 
   const handleCreateOrder = (newOrder: Order) => {
@@ -165,7 +203,7 @@ export default function Pedidos() {
           <ShoppingCart className="w-6 h-6 text-primary" />
           <div>
             <h1 className="text-2xl font-bold gradient-text">Pedidos</h1>
-            <p className="text-muted-foreground">Arraste os pedidos para alterar o status</p>
+            <p className="text-muted-foreground">Gerencie o fluxo de pedidos</p>
           </div>
         </div>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -193,6 +231,7 @@ export default function Pedidos() {
             onDragStart={handleDragStart}
             onDrop={handleDrop}
             onDragOver={handleDragOver}
+            onAdvance={handleAdvance}
           />
         ))}
       </div>

@@ -18,11 +18,13 @@ import {
   Bell,
   User,
   ShieldCheck,
+  Circle,
 } from "lucide-react";
 import logo from '@/assets/logo.jpeg';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import { mockCompanies } from '@/data/mockData';
+import { Switch } from "@/components/ui/switch";
 
 const menuItems = [
   { title: 'Dashboard', url: '/', icon: LayoutDashboard },
@@ -61,6 +63,7 @@ export const MainLayout = ({ children }: { children: React.ReactNode }) => {
 
 const Sidebar = () => {
   const [open, setOpen] = useState(true);
+  const [isStoreOpen, setIsStoreOpen] = useState(true);
   const location = useLocation();
   const { logout, user } = useAuth();
   const navigate = useNavigate();
@@ -69,6 +72,8 @@ const Sidebar = () => {
     logout();
     navigate('/login');
   };
+
+  const showStoreStatus = user?.role === 'admin' || user?.role === 'attendant';
 
   return (
     <nav
@@ -115,7 +120,32 @@ const Sidebar = () => {
           ))}
       </div>
 
-      <div className="mt-auto border-t border-gray-200 dark:border-gray-800 pt-2 pb-12">
+      <div className="mt-auto border-t border-gray-200 dark:border-gray-800 pt-2">
+        {showStoreStatus && (
+          <div className={`mb-2 px-2 py-2 rounded-md ${open ? 'bg-gray-50 dark:bg-gray-800/50' : 'flex justify-center'}`}>
+            {open ? (
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <Circle className={`h-2 w-2 fill-current ${isStoreOpen ? 'text-green-500' : 'text-red-500'}`} />
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500">
+                    {isStoreOpen ? "Aberto" : "Fechado"}
+                  </span>
+                </div>
+                <Switch 
+                  checked={isStoreOpen} 
+                  onCheckedChange={setIsStoreOpen}
+                  className="scale-75 data-[state=checked]:bg-green-500"
+                />
+              </div>
+            ) : (
+              <div 
+                className={`h-3 w-3 rounded-full border-2 border-white dark:border-gray-900 shadow-sm ${isStoreOpen ? 'bg-green-500' : 'bg-red-500'}`}
+                title={isStoreOpen ? "Aberto" : "Fechado"}
+              />
+            )}
+          </div>
+        )}
+
         <button
           onClick={handleLogout}
           className={`relative flex h-11 w-full items-center rounded-md transition-all duration-200 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-200`}
