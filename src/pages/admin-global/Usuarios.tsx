@@ -48,6 +48,7 @@ export default function Usuarios() {
 
       <div className="flex gap-4">
         <Input placeholder="Buscar por nome ou email..." className="max-w-sm" />
+        <Button>+ Novo Usuário</Button>
         <select className="px-3 py-2 border rounded-md bg-background">
           <option value="">Todos os Roles</option>
           <option value="super_admin">Super Admin</option>
