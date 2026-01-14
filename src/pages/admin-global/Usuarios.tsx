@@ -6,6 +6,7 @@ import { Lock, RotateCcw, Plus } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { UserForm } from '@/components/forms/UserForm';
 import { toast } from '@/hooks/use-toast';
+import { mockCompanies } from '@/data/mockData';
 
 export default function Usuarios() {
   const [usuarios, setUsuarios] = useState([
@@ -17,12 +18,19 @@ export default function Usuarios() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleAddUser = (data: any) => {
+    const companyName = data.role === 'super_admin' 
+      ? "Sistema" 
+      : mockCompanies.find(c => c.id === data.companyId)?.name || "Manual";
+
     const newUser = {
       id: String(usuarios.length + 1),
-      ...data,
-      empresa: "Manual",
+      nome: data.name,
+      email: data.email,
+      role: data.role,
+      empresa: companyName,
       status: "Ativo"
     };
+    
     setUsuarios([...usuarios, newUser]);
     setIsDialogOpen(false);
     toast({ title: "Usuário criado!", description: `${data.name} foi adicionado com sucesso.` });
@@ -41,7 +49,13 @@ export default function Usuarios() {
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader><DialogTitle>Cadastrar Novo Usuário Global</DialogTitle></DialogHeader>
-            <UserForm onClose={() => setIsDialogOpen(false)} onSubmit={handleAddUser} />
+            <UserForm 
+              onClose={() => setIsDialogOpen(false)} 
+              onSubmit={handleAddUser}
+              companies={mockCompanies}
+              showCompanySelect={true}
+              showSuperAdminOption={true}
+            />
           </DialogContent>
         </Dialog>
       </div>
@@ -71,10 +85,14 @@ export default function Usuarios() {
               <tbody>
                 {usuarios.map((usuario) => (
                   <tr key={usuario.id} className="border-b hover:bg-muted/50">
-                    <td className="py-3 px-4 font-medium">{usuario.nome || (usuario as any).name}</td>
+                    <td className="py-3 px-4 font-medium">{usuario.nome}</td>
                     <td className="py-3 px-4">{usuario.email}</td>
                     <td className="py-3 px-4">
-                      <span className="px-2 py-1 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                      <span className={`px-2 py-1 rounded text-xs font-medium ${
+                        usuario.role === 'super_admin' 
+                          ? "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200"
+                          : "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+                      }`}>
                         {usuario.role}
                       </span>
                     </td>
