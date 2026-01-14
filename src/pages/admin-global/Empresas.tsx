@@ -14,7 +14,6 @@ const empresaSchema = z.object({
   nome: z.string().min(2, 'Nome deve ter pelo menos 2 caracteres'),
   segmento: z.string().min(2, 'Segmento é obrigatório'),
   whatsapp: z.string().regex(/^\d{11}$/, 'WhatsApp inválido (11 dígitos)'),
-  plano: z.string().min(1, 'Selecione um plano'),
 });
 
 type EmpresaFormValues = z.infer<typeof empresaSchema>;
@@ -22,7 +21,7 @@ type EmpresaFormValues = z.infer<typeof empresaSchema>;
 function EmpresaForm({ onClose, onSubmit }: { onClose: () => void, onSubmit: (data: EmpresaFormValues) => void }) {
   const form = useForm<EmpresaFormValues>({
     resolver: zodResolver(empresaSchema),
-    defaultValues: { nome: '', segmento: '', whatsapp: '', plano: 'Standard' },
+    defaultValues: { nome: '', segmento: '', whatsapp: '' },
   });
 
   return (
@@ -37,9 +36,6 @@ function EmpresaForm({ onClose, onSubmit }: { onClose: () => void, onSubmit: (da
         <FormField control={form.control} name="whatsapp" render={({ field }) => (
           <FormItem><FormLabel>WhatsApp (apenas números)</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
         )} />
-        <FormField control={form.control} name="plano" render={({ field }) => (
-          <FormItem><FormLabel>Plano</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
-        )} />
         <div className="flex gap-2 pt-4">
           <Button variant="outline" onClick={onClose} className="flex-1" type="button">Cancelar</Button>
           <Button type="submit" className="flex-1">Salvar</Button>
@@ -51,10 +47,10 @@ function EmpresaForm({ onClose, onSubmit }: { onClose: () => void, onSubmit: (da
 
 export default function Empresas() {
   const [empresas, setEmpresas] = useState([
-    { id: "1", nome: "Detail Soluções", segmento: "Pizza", whatsapp: "11999999999", status: "Ativa", plano: "Premium", faturamento: "R$ 12.450,00" },
-    { id: "2", nome: "Pizzaria do João", segmento: "Pizza", whatsapp: "11888888888", status: "Ativa", plano: "Standard", faturamento: "R$ 8.900,00" },
-    { id: "3", nome: "Burger House", segmento: "Hamburger", whatsapp: "11777777777", status: "Inativa", plano: "Basic", faturamento: "R$ 0,00" },
-    { id: "4", sushi: "Sushi Express", nome: "Sushi Express", segmento: "Sushi", whatsapp: "11666666666", status: "Ativa", plano: "Premium", faturamento: "R$ 15.200,00" },
+    { id: "1", nome: "Detail Soluções", segmento: "Pizza", whatsapp: "11999999999", status: "Ativa" },
+    { id: "2", nome: "Pizzaria do João", segmento: "Pizza", whatsapp: "11888888888", status: "Ativa" },
+    { id: "3", nome: "Burger House", segmento: "Hamburger", whatsapp: "11777777777", status: "Inativa" },
+    { id: "4", nome: "Sushi Express", segmento: "Sushi", whatsapp: "11666666666", status: "Ativa" },
   ]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -63,7 +59,6 @@ export default function Empresas() {
       id: String(empresas.length + 1),
       ...data,
       status: "Ativa",
-      faturamento: "R$ 0,00"
     };
     setEmpresas([...empresas, newEmpresa]);
     setIsDialogOpen(false);
@@ -106,8 +101,6 @@ export default function Empresas() {
                   <th className="text-left py-3 px-4 font-semibold">Segmento</th>
                   <th className="text-left py-3 px-4 font-semibold">WhatsApp</th>
                   <th className="text-left py-3 px-4 font-semibold">Status</th>
-                  <th className="text-left py-3 px-4 font-semibold">Plano</th>
-                  <th className="text-left py-3 px-4 font-semibold">Faturamento</th>
                   <th className="text-left py-3 px-4 font-semibold">Ações</th>
                 </tr>
               </thead>
@@ -122,8 +115,6 @@ export default function Empresas() {
                         empresa.status === "Ativa" ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200" : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
                       }`}>{empresa.status}</span>
                     </td>
-                    <td className="py-3 px-4">{empresa.plano}</td>
-                    <td className="py-3 px-4">{empresa.faturamento}</td>
                     <td className="py-3 px-4">
                       <div className="flex gap-2">
                         <Button variant="ghost" size="sm"><Eye className="h-4 w-4" /></Button>
