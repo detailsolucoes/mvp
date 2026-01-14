@@ -69,11 +69,6 @@ const menuItems = [
 
 const adminItems = [
   {
-    title: 'Dashboard Global',
-    url: '/admin-global/dashboard',
-    icon: LayoutDashboard
-  },
-  {
     title: 'Empresas',
     url: '/admin-global/empresas',
     icon: Users
@@ -82,31 +77,6 @@ const adminItems = [
     title: 'Usuários',
     url: '/admin-global/usuarios',
     icon: ShieldCheck
-  },
-  {
-    title: 'Planos',
-    url: '/admin-global/planos',
-    icon: BarChart3
-  },
-  {
-    title: 'Relatórios',
-    url: '/admin-global/relatorios',
-    icon: BarChart3
-  },
-  {
-    title: 'Sistema',
-    url: '/admin-global/sistema',
-    icon: Settings
-  },
-  {
-    title: 'Notificações',
-    url: '/admin-global/notificacoes',
-    icon: Bell
-  },
-  {
-    title: 'Configurações',
-    url: '/admin-global/configuracoes',
-    icon: Settings
   }
 ];
 
@@ -160,18 +130,22 @@ const Sidebar = () => {
           />
         ))}
         
-        {user?.role === 'super_admin' && <div className="my-4 border-t border-gray-100 dark:border-gray-800" />}
-
-        {menuItems.map((item) => (
-          <Option
-            key={item.url}
-            Icon={item.icon}
-            title={item.title}
-            url={item.url}
-            selected={location.pathname === item.url}
-            open={open}
-          />
-        ))}
+        {user?.role !== 'super_admin' && menuItems
+          .filter(item => {
+            // Se for admin de empresa, remover Configurações
+            if (user?.role === 'admin' && item.url === '/configuracoes') return false;
+            return true;
+          })
+          .map((item) => (
+            <Option
+              key={item.url}
+              Icon={item.icon}
+              title={item.title}
+              url={item.url}
+              selected={location.pathname === item.url}
+              open={open}
+            />
+          ))}
       </div>
 
       <div className="border-t border-gray-200 dark:border-gray-800 pt-4 space-y-1 mb-12">
